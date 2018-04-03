@@ -2,5 +2,7 @@
     "name": "weare-awesome/awesomeness-sdk",
     "type": "library",
     "license": "Apache-2.0",
-    "require": {}
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    }
 }
