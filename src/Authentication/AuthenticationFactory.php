@@ -27,7 +27,7 @@ class AuthenticationFactory
         $authentication->setScopes($token->getClaim('scopes'));
 
         if($authentication instanceof UserAuthenticationType) {
-            $authentication->setUserId($id);
+            $authentication->setUserId((int) $id);
         }
         return $authentication;
     }
