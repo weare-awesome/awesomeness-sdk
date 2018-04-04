@@ -14,20 +14,18 @@ interface ConnectionInterface
     /**
      * @param string $uri
      * @param array $params
-     * @param array $headers
      *
      * @return mixed
      */
-    public function get($uri, array $params = [], array $headers = []);
+    public function get($uri, array $params = []);
 
     /**
      * @param string $uri
      * @param array $params
-     * @param array $headers
      *
      * @return mixed
      */
-    public function post($uri, array $params = [], array $headers = []);
+    public function post($uri, array $params = []);
 
     /**
      * @return AsyncInterface

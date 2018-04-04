@@ -3,7 +3,9 @@
     "type": "library",
     "license": "Apache-2.0",
     "require": {
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.3",
+        "lcobucci/jwt": "^3.2.2"
+
     },
     "autoload": {
         "psr-4": {

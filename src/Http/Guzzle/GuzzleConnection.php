@@ -29,22 +29,12 @@ class GuzzleConnection implements ConnectionInterface
         // TODO: Implement setBaseUrl() method.
     }
 
-    /**
-     * @param $uri
-     * @param $params
-     * @param array $headers
-     */
-    public function get($uri, $params, array $headers = [])
+    public function get($uri, array $params = [], array $headers = [])
     {
         // TODO: Implement get() method.
     }
 
-    /**
-     * @param $uri
-     * @param $params
-     * @param array $headers
-     */
-    public function post($uri, $params, array $headers = [])
+    public function post($uri, array $params = [], array $headers = [])
     {
         // TODO: Implement post() method.
     }
