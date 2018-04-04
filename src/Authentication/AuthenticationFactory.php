@@ -25,6 +25,10 @@ class AuthenticationFactory
         $authentication->setRefreshToken($refreshToken);
         $authentication->setExpires((new \DateTime())->setTimestamp($token->getClaim('exp')));
         $authentication->setScopes($token->getClaim('scopes'));
+
+        if($authentication instanceof UserAuthenticationType) {
+            $authentication->setUserId($id);
+        }
         return $authentication;
     }
 
@@ -37,6 +41,12 @@ class AuthenticationFactory
     {
         switch ($type)
         {
+            case ('contact'):
+                return new Contact();
+            case ('user'):
+                return new User();
+            case ('client'):
+                return new Client();
             default:
                 return new Authentication();
         }
