@@ -17,7 +17,7 @@ class ApiResponse
 
     /**
      * @var string
-     */
+     */#
     protected $message;
 
     /**
@@ -113,5 +113,18 @@ class ApiResponse
     public function setCode($code)
     {
         $this->code = $code;
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return mixed|null
+     */
+    public function getDataByKey($key)
+    {
+        if(isset($this->data[$key])) {
+            return $this->data[$key];
+        }
+        return null;
     }
 }

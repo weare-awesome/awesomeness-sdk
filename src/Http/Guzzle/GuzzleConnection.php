@@ -5,6 +5,8 @@ namespace WeAreAwesome\AwesomenessSDK\Http\Guzzle;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use WeAreAwesome\AwesomenessSDK\Http\ApiResponse;
 use WeAreAwesome\AwesomenessSDK\Http\AsyncInterface;
 use WeAreAwesome\AwesomenessSDK\Http\ConnectionInterface;
 
@@ -57,10 +59,30 @@ class GuzzleConnection implements ConnectionInterface
         return trim($this->baseUrl, '/') . '/' . trim($uri, '/');
     }
 
+    private function hydrateApiResponse(ApiResponse $apiResponse, Response $response)
+    {
+        $body = json_decode($response->getBody(), true);
+
+        $apiResponse->setMessage($body['message']);
+        $apiResponse->setCode($body['code']);
+        $apiResponse->setData($body['data']);
+        $apiResponse->setErrors($body['errors']);
+        $apiResponse->setDescription($body['description']);
+
+        return $apiResponse;
+    }
+
     private function call(Request $request)
     {
         try {
-            return $this->client->send($request);
+            $response = $this->client->send($request);
+
+            if(!$response instanceof Response) {
+                return null;
+            }
+
+            return $this->hydrateApiResponse(new ApiResponse(), $response);
+
         } catch (ServerException $e) {
             dd($e);
         }

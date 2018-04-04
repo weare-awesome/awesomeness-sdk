@@ -3,6 +3,7 @@
 namespace WeAreAwesome\AwesomenessSDK\Authentication;
 
 use Lcobucci\JWT\Parser;
+use Lcobucci\JWT\Token;
 
 class AuthenticationFactory
 {
@@ -17,9 +18,46 @@ class AuthenticationFactory
     {
         $token = self::parseAccessToken($accessToken);
 
+        list($type, $id) = self::parseType($token);
+
+        $authentication = self::getAuthenticationByType($type);
+        $authentication->setAccessToken($accessToken);
+        $authentication->setRefreshToken($refreshToken);
+        $authentication->setExpires((new \DateTime())->setTimestamp($token->getClaim('exp')));
+        $authentication->setScopes($token->getClaim('scopes'));
+        return $authentication;
     }
 
-    private function parseAccessToken($accessToken)
+    /**
+     * @param $type
+     *
+     * @return Authentication
+     */
+    private static function getAuthenticationByType($type)
+    {
+        switch ($type)
+        {
+            default:
+                return new Authentication();
+        }
+    }
+
+    /**
+     * @param Token $token
+     *
+     * @return array
+     */
+    private static function parseType(Token $token)
+    {
+        return explode(':', $token->getClaim('sub'));
+    }
+
+    /**
+     * @param $accessToken
+     *
+     * @return Token
+     */
+    private static function parseAccessToken($accessToken)
     {
         $parser = new Parser();
 
