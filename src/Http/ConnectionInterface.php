@@ -15,7 +15,7 @@ interface ConnectionInterface
      * @param string $uri
      * @param array $params
      *
-     * @return mixed
+     * @return ApiResponse
      */
     public function get($uri, array $params = []);
 
@@ -23,7 +23,7 @@ interface ConnectionInterface
      * @param string $uri
      * @param array $params
      *
-     * @return mixed
+     * @return ApiResponse
      */
     public function post($uri, array $params = []);
 
