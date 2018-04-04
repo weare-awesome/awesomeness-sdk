@@ -7,27 +7,27 @@ interface ConnectionInterface
 
 
     /**
-     * @param $url
+     * @param string $url
      */
     public function setBaseUrl($url);
 
     /**
-     * @param $uri
-     * @param $params
+     * @param string $uri
+     * @param array $params
      * @param array $headers
      *
      * @return mixed
      */
-    public function get($uri, $params, array $headers = []);
+    public function get($uri, array $params = [], array $headers = []);
 
     /**
-     * @param $uri
-     * @param $params
+     * @param string $uri
+     * @param array $params
      * @param array $headers
      *
      * @return mixed
      */
-    public function post($uri, $params, array $headers = []);
+    public function post($uri, array $params = [], array $headers = []);
 
     /**
      * @return AsyncInterface
