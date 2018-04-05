@@ -41,6 +41,14 @@ class Authenticate
                     'scope' => 'contact'
                 ]
             );
+
+        $this->awesomeness
+            ->setAuthentication(
+                AuthenticationFactory::make(
+                    $apiResponse->getDataByKey('access_token'),
+                    $apiResponse->getDataByKey('refresh_token')
+                )
+            );
     }
 
 }
