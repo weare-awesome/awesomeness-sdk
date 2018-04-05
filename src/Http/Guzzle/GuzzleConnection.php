@@ -27,18 +27,12 @@ class GuzzleConnection implements ConnectionInterface
      * GuzzleConnection constructor.
      *
      * @param Client $client
+     * @param $baseUrl
      */
-    public function __construct(Client $client)
+    public function __construct(Client $client, $baseUrl)
     {
         $this->client = $client;
-    }
-
-    /**
-     * @param string $url
-     */
-    public function setBaseUrl($url)
-    {
-        $this->baseUrl = $url;
+        $this->baseUrl = $baseUrl;
     }
 
     public function get($uri, array $params = [])

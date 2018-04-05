@@ -7,11 +7,6 @@ interface ConnectionInterface
 {
 
     /**
-     * @param string $url
-     */
-    public function setBaseUrl($url);
-
-    /**
      * @param string $uri
      * @param array $params
      *
