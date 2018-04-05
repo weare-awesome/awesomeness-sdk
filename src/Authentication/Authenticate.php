@@ -45,8 +45,9 @@ class Authenticate
     /**
      * @param $email
      * @param $password
+     * @param bool $setCookie
      */
-    public function asContact($email, $password)
+    public function asContact($email, $password, $setCookie = false)
     {
         $apiResponse =  $this->awesomeness
             ->http()
@@ -70,13 +71,18 @@ class Authenticate
                     $apiResponse->getDataByKey('refresh_token')
                 )
             );
+
+        if($setCookie) {
+            $this->setCookie();
+        }
     }
 
     /**
      * @param $email
      * @param $password
+     * @param bool $setCookie
      */
-    public function asUser($email, $password)
+    public function asUser($email, $password, $setCookie = false)
     {
         $apiResponse =  $this->awesomeness
             ->http()
@@ -100,6 +106,17 @@ class Authenticate
                     $apiResponse->getDataByKey('refresh_token')
                 )
             );
+        if($setCookie) {
+            $this->setCookie();
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function setCookie()
+    {
+        $this->awesomeness->updateCookie();
     }
 
 }

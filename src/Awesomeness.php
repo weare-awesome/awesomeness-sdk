@@ -102,7 +102,7 @@ class Awesomeness
     {
         $cookie = Cookie::getCookie();
 
-        if(!is_null($cookie)) {
+        if (!is_null($cookie)) {
             $this->authenticate()->fromCookie($cookie);
         }
     }
@@ -113,7 +113,12 @@ class Awesomeness
     public function updateCookie()
     {
         $cookie = Cookie::make($this);
-        Cookie::setCookie($cookie);
+        Cookie::setCookie(
+            $cookie,
+            $this->authentication()
+                ->getExpires()
+                ->getTimestamp()
+        );
     }
 
     /**
@@ -121,13 +126,14 @@ class Awesomeness
      */
     public function isAuthenticated()
     {
-        if(is_null($this->authentication)) {
+        if (is_null($this->authentication)) {
             return false;
         }
 
-        if(!$this->authentication->hasExpired()) {
+        if (!$this->authentication->hasExpired()) {
             return true;
         }
+
         return false;
     }
 }

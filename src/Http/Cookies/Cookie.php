@@ -100,11 +100,18 @@ class Cookie
     /**
      * @param Cookie $cookie
      *
+     * @param int $expires
+     *
      * @return bool
      */
-    public static function setCookie(Cookie $cookie)
+    public static function setCookie(Cookie $cookie, $expires)
     {
-        return setcookie(self::COOKIE_NAME, $cookie);
+        return setcookie(
+            self::COOKIE_NAME,
+            $cookie,
+            $expires,
+            '/'
+        );
     }
 
     /**
