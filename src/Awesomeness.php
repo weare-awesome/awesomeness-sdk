@@ -95,6 +95,9 @@ class Awesomeness
         $this->authentication = $authentication;
     }
 
+    /**
+     * @return void
+     */
     public function setSessionFromCookie()
     {
         $cookie = Cookie::getCookie();
@@ -102,6 +105,15 @@ class Awesomeness
         if(!is_null($cookie)) {
             $this->authenticate()->fromCookie($cookie);
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function updateCookie()
+    {
+        $cookie = Cookie::make($this);
+        Cookie::setCookie($cookie);
     }
 
     /**

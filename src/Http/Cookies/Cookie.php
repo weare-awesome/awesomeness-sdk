@@ -2,6 +2,8 @@
 
 namespace WeAreAwesome\AwesomenessSDK\Http\Cookies;
 
+use WeAreAwesome\AwesomenessSDK\Awesomeness;
+
 class Cookie
 {
 
@@ -76,6 +78,23 @@ class Cookie
             return $cookie;
         }
         return null;
+    }
+
+    /**
+     * @param Awesomeness $awesomeness
+     *
+     * @return Cookie
+     */
+    public static function make(Awesomeness $awesomeness)
+    {
+        $cookie = new self();
+
+        if($authentication = $awesomeness->authentication()) {
+            $cookie->setAccessToken($authentication->getAccessToken());
+            $cookie->setRefreshToken($authentication->getRefreshToken());
+        }
+
+        return $cookie;
     }
 
     /**
