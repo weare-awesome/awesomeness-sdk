@@ -113,7 +113,7 @@ class Awesomeness
             return false;
         }
 
-        if($this->authentication->hasExpired()) {
+        if(!$this->authentication->hasExpired()) {
             return true;
         }
         return false;
