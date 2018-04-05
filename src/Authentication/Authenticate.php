@@ -3,12 +3,15 @@
 namespace WeAreAwesome\AwesomenessSDK\Authentication;
 
 use WeAreAwesome\AwesomenessSDK\Awesomeness;
+use WeAreAwesome\AwesomenessSDK\Http\Cookies\Cookie;
 
 class Authenticate
 {
     const OAUTH_URL = '/users/oauth';
 
     const CONTACT_GRANT = 'contact_authentication';
+
+
     /**
      * @var Awesomeness
      */
@@ -24,7 +27,23 @@ class Authenticate
         $this->awesomeness = $awesomeness;
     }
 
+    /**
+     * @param Cookie $cookie
+     */
+    public function fromCookie(Cookie $cookie)
+    {
+        $this->awesomeness->setAuthentication(
+            AuthenticationFactory::make(
+                $cookie->getAccessToken(),
+                $cookie->getRefreshToken()
+            )
+        );
+    }
 
+    /**
+     * @param $email
+     * @param $password
+     */
     public function asContact($email, $password)
     {
         $apiResponse =  $this->awesomeness

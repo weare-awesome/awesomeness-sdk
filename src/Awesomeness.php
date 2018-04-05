@@ -4,6 +4,7 @@ namespace WeAreAwesome\AwesomenessSDK;
 
 use WeAreAwesome\AwesomenessSDK\Authentication\Authenticate;
 use WeAreAwesome\AwesomenessSDK\Authentication\Authentication;
+use WeAreAwesome\AwesomenessSDK\Http\Cookies\Cookie;
 use WeAreAwesome\AwesomenessSDK\Http\HttpRequests;
 
 class Awesomeness
@@ -89,9 +90,18 @@ class Awesomeness
     /**
      * @param Authentication $authentication
      */
-    public function setAuthentication($authentication)
+    public function setAuthentication(Authentication $authentication)
     {
         $this->authentication = $authentication;
+    }
+
+    public function setSessionFromCookie()
+    {
+        $cookie = Cookie::getCookie();
+
+        if($cookie) {
+            $this->authenticate()->fromCookie($cookie);
+        }
     }
 
     /**
@@ -100,7 +110,6 @@ class Awesomeness
     public function isAuthenticated()
     {
         if(is_null($this->authentication)) {
-            return false;
         }
 
         if($this->authentication->hasExpired()) {
