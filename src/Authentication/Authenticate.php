@@ -119,4 +119,13 @@ class Authenticate
         $this->awesomeness->updateCookie();
     }
 
+    /**
+     * @return void
+     */
+    public function logout()
+    {
+        $this->awesomeness->removeCookie();
+        $this->awesomeness->setAuthentication(null);
+    }
+
 }

@@ -90,7 +90,7 @@ class Awesomeness
     /**
      * @param Authentication $authentication
      */
-    public function setAuthentication(Authentication $authentication)
+    public function setAuthentication(Authentication $authentication = null)
     {
         $this->authentication = $authentication;
     }
@@ -110,6 +110,14 @@ class Awesomeness
     /**
      * @return void
      */
+    public function removeCookie()
+    {
+        Cookie::expireCookie();
+    }
+
+    /**
+     * @return void
+     */
     public function updateCookie()
     {
         $cookie = Cookie::make($this);
@@ -120,6 +128,8 @@ class Awesomeness
                 ->getTimestamp()
         );
     }
+
+
 
     /**
      * @return bool

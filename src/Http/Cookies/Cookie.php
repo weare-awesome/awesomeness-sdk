@@ -51,7 +51,6 @@ class Cookie
         $this->refreshToken = $refreshToken;
     }
 
-
     public function toArray()
     {
         return [
@@ -70,13 +69,15 @@ class Cookie
      */
     public static function getCookie()
     {
-        if(isset($_COOKIE[self::COOKIE_NAME])){
+        if (isset($_COOKIE[self::COOKIE_NAME])) {
             $array = self::decodeCookieString($_COOKIE[self::COOKIE_NAME]);
             $cookie = new self();
             $cookie->setAccessToken($array['access_token']);
             $cookie->setRefreshToken($array['refresh_token']);
+
             return $cookie;
         }
+
         return null;
     }
 
@@ -89,7 +90,7 @@ class Cookie
     {
         $cookie = new self();
 
-        if($authentication = $awesomeness->authentication()) {
+        if ($authentication = $awesomeness->authentication()) {
             $cookie->setAccessToken($authentication->getAccessToken());
             $cookie->setRefreshToken($authentication->getRefreshToken());
         }
@@ -122,5 +123,17 @@ class Cookie
     public static function decodeCookieString($cookie)
     {
         return json_decode(base64_decode($cookie), true);
+    }
+
+    /**
+     * @return bool
+     */
+    public static function expireCookie()
+    {
+        return setcookie(
+            self::COOKIE_NAME,
+            null,
+            (time() - 3600)
+        );
     }
 }
