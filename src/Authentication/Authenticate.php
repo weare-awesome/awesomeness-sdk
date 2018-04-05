@@ -11,6 +11,8 @@ class Authenticate
 
     const CONTACT_GRANT = 'contact_authentication';
 
+    const USER_GRANT = 'user_authentication';
+
 
     /**
      * @var Awesomeness
@@ -58,6 +60,36 @@ class Authenticate
                     'username' => $email,
                     'password' => $password,
                     'scope' => 'contact'
+                ]
+            );
+
+        $this->awesomeness
+            ->setAuthentication(
+                AuthenticationFactory::make(
+                    $apiResponse->getDataByKey('access_token'),
+                    $apiResponse->getDataByKey('refresh_token')
+                )
+            );
+    }
+
+    /**
+     * @param $email
+     * @param $password
+     */
+    public function asUser($email, $password)
+    {
+        $apiResponse =  $this->awesomeness
+            ->http()
+            ->sync()
+            ->post(
+                self::OAUTH_URL,
+                [
+                    'grant_type' => self::USER_GRANT,
+                    'client_id' => $this->awesomeness->getClientId(),
+                    'client_secret' => $this->awesomeness->getClientSecret(),
+                    'username' => $email,
+                    'password' => $password,
+                    'scope' => 'user'
                 ]
             );
 
