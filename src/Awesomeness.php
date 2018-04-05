@@ -2,8 +2,8 @@
 
 namespace WeAreAwesome\AwesomenessSDK;
 
+use WeAreAwesome\AwesomenessSDK\Authentication\Authenticate;
 use WeAreAwesome\AwesomenessSDK\Authentication\Authentication;
-use WeAreAwesome\AwesomenessSDK\Http\ConnectionInterface;
 use WeAreAwesome\AwesomenessSDK\Http\HttpRequests;
 
 class Awesomeness
@@ -41,7 +41,7 @@ class Awesomeness
         $clientId,
         $clientSecret
     ) {
-        $this->connection = $http;
+        $this->http = $http;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
     }
@@ -73,9 +73,17 @@ class Awesomeness
     /**
      * @return Authentication
      */
-    public function getAuthentication()
+    public function authentication()
     {
         return $this->authentication;
+    }
+
+    /**
+     * @return Authenticate
+     */
+    public function authenticate()
+    {
+        return new Authenticate($this);
     }
 
     /**
