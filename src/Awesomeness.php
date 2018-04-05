@@ -4,14 +4,15 @@ namespace WeAreAwesome\AwesomenessSDK;
 
 use WeAreAwesome\AwesomenessSDK\Authentication\Authentication;
 use WeAreAwesome\AwesomenessSDK\Http\ConnectionInterface;
+use WeAreAwesome\AwesomenessSDK\Http\HttpRequests;
 
 class Awesomeness
 {
 
     /**
-     * @var ConnectionInterface
+     * @var HttpRequests
      */
-    protected $connection;
+    protected $http;
 
     /**
      * @var string
@@ -31,26 +32,26 @@ class Awesomeness
     /**
      * Awesomeness constructor.
      *
-     * @param ConnectionInterface $connection
+     * @param HttpRequests $http
      * @param string $clientId
      * @param string $clientSecret
      */
     public function __construct(
-        ConnectionInterface $connection,
+        HttpRequests $http,
         $clientId,
         $clientSecret
     ) {
-        $this->connection = $connection;
+        $this->connection = $http;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
     }
 
     /**
-     * @return ConnectionInterface
+     * @return HttpRequests
      */
-    public function getConnection()
+    public function http()
     {
-        return $this->connection;
+        return $this->http;
     }
 
     /**
@@ -94,6 +95,9 @@ class Awesomeness
             return false;
         }
 
-        return true;
+        if($this->authentication->hasExpired()) {
+            return true;
+        }
+        return false;
     }
 }

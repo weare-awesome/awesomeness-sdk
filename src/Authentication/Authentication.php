@@ -110,5 +110,14 @@ class Authentication
         $this->scopes = $scopes;
     }
 
-
+    /**
+     * @return boolean
+     */
+    public function hasExpired()
+    {
+        if ($this->expires->getTimestamp() < time()) {
+            return true;
+        }
+        return false;
+    }
 }

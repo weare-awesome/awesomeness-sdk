@@ -7,7 +7,7 @@ use WeAreAwesome\AwesomenessSDK\Http\ConnectionInterface;
 class AwesomenessBuilder
 {
 
-    public static function build(ConnectionInterface $connection, $clientId, $clientSecret)
+    public static function build($clientId, $clientSecret)
     {
 
     }

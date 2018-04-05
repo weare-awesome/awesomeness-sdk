@@ -2,9 +2,9 @@
 
 namespace WeAreAwesome\AwesomenessSDK\Http;
 
+
 interface ConnectionInterface
 {
-
 
     /**
      * @param string $url
@@ -27,8 +27,4 @@ interface ConnectionInterface
      */
     public function post($uri, array $params = []);
 
-    /**
-     * @return AsyncInterface
-     */
-    public function async();
 }
