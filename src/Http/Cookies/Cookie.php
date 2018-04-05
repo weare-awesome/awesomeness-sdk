@@ -85,7 +85,7 @@ class Cookie
      */
     public static function setCookie(Cookie $cookie)
     {
-        return setCookie(self::COOKIE_NAME, $cookie);
+        return setcookie(self::COOKIE_NAME, $cookie);
     }
 
     /**
