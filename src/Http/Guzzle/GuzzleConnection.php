@@ -47,12 +47,13 @@ class GuzzleConnection implements ConnectionInterface
         $uri,
         array $params = [],
         Authentication $authentication = null
-    )
-    {
+    ) {
         return $this->call(new Request(
             'GET',
             $this->getUrl($uri)
-        ));
+        ),
+            $authentication
+        );
     }
 
     /**
@@ -87,14 +88,23 @@ class GuzzleConnection implements ConnectionInterface
     /**
      * @param Request $request
      *
+     * @param Authentication|null $authentication
+     *
      * @return null|ApiResponse
      */
-    private function call(Request $request)
+    private function call(Request $request, Authentication $authentication = null)
     {
+        if ($authentication) {
+            $request = $request->withAddedHeader(
+                'Authorization',
+                'Bearer ' . $authentication->getAccessToken()
+            );
+        }
+
         try {
             $response = $this->client->send($request);
 
-            if(!$response instanceof Response) {
+            if (!$response instanceof Response) {
                 return null;
             }
 
@@ -116,15 +126,16 @@ class GuzzleConnection implements ConnectionInterface
         $uri,
         array $params = [],
         Authentication $authentication = null
-    )
-    {
+    ) {
 
         return $this->call(new Request(
             'POST',
             $this->getUrl($uri),
             ['content-type' => 'application/json'],
             json_encode($params)
-        ));
+        ),
+            $authentication
+        );
     }
 
     /**

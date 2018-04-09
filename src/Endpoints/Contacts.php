@@ -28,7 +28,7 @@ class Contacts
         awesomeness
             ->http()
             ->sync()
-            ->get('contacts/me');
+            ->get('contacts/me', [], $this->awesomeness->authentication());
     }
 
     public function byId($id)
