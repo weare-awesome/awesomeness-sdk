@@ -4,6 +4,7 @@ namespace WeAreAwesome\AwesomenessSDK;
 
 use WeAreAwesome\AwesomenessSDK\Authentication\Authenticate;
 use WeAreAwesome\AwesomenessSDK\Authentication\Authentication;
+use WeAreAwesome\AwesomenessSDK\Endpoints\Contacts;
 use WeAreAwesome\AwesomenessSDK\Http\Cookies\Cookie;
 use WeAreAwesome\AwesomenessSDK\Http\HttpRequests;
 
@@ -145,5 +146,13 @@ class Awesomeness
         }
 
         return false;
+    }
+
+    /**
+     * @return Contacts
+     */
+    public function contacts()
+    {
+        return new Contacts($this);
     }
 }

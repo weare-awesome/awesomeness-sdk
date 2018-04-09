@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use WeAreAwesome\AwesomenessSDK\Authentication\Authentication;
 use WeAreAwesome\AwesomenessSDK\Http\ApiResponse;
 use WeAreAwesome\AwesomenessSDK\Http\AsyncInterface;
 use WeAreAwesome\AwesomenessSDK\Http\ConnectionInterface;
@@ -35,7 +36,18 @@ class GuzzleConnection implements ConnectionInterface
         $this->baseUrl = $baseUrl;
     }
 
-    public function get($uri, array $params = [])
+    /**
+     * @param string $uri
+     * @param array $params
+     * @param Authentication|null $authentication
+     *
+     * @return null|ApiResponse
+     */
+    public function get(
+        $uri,
+        array $params = [],
+        Authentication $authentication = null
+    )
     {
         return $this->call(new Request(
             'GET',
@@ -53,6 +65,12 @@ class GuzzleConnection implements ConnectionInterface
         return trim($this->baseUrl, '/') . '/' . trim($uri, '/');
     }
 
+    /**
+     * @param ApiResponse $apiResponse
+     * @param Response $response
+     *
+     * @return ApiResponse
+     */
     private function hydrateApiResponse(ApiResponse $apiResponse, Response $response)
     {
         $body = json_decode($response->getBody(), true);
@@ -66,6 +84,11 @@ class GuzzleConnection implements ConnectionInterface
         return $apiResponse;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return null|ApiResponse
+     */
     private function call(Request $request)
     {
         try {
@@ -82,7 +105,18 @@ class GuzzleConnection implements ConnectionInterface
         }
     }
 
-    public function post($uri, array $params = [])
+    /**
+     * @param string $uri
+     * @param array $params
+     * @param Authentication|null $authentication
+     *
+     * @return null|ApiResponse
+     */
+    public function post(
+        $uri,
+        array $params = [],
+        Authentication $authentication = null
+    )
     {
 
         return $this->call(new Request(
