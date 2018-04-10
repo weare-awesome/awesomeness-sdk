@@ -24,7 +24,7 @@ class GuzzleConnection implements ConnectionInterface
     /**
      * @var array
      */
-    protected $headers;
+    protected $headers = [];
 
     /**
      * @var Client
@@ -73,7 +73,7 @@ class GuzzleConnection implements ConnectionInterface
      */
     public function setAuthentication(Authentication $authentication = null)
     {
-        $this->authentication = null;
+        $this->authentication = $authentication;
     }
 
     /**
@@ -156,7 +156,7 @@ class GuzzleConnection implements ConnectionInterface
     {
 
         $request = $this->addHeadersToRequest($request);
-
+        dd($request);
         try {
             $response = $this->client->send($request);
 
