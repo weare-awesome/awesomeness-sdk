@@ -121,6 +121,9 @@ class GuzzleConnection implements ConnectionInterface
         $apiResponse->setData($body['data']);
         $apiResponse->setErrors($body['errors']);
         $apiResponse->setDescription($body['description']);
+        if(isset($body['pagination'])) {
+            $apiResponse->setPagination($body['pagination']);
+        }
 
         return $apiResponse;
     }
@@ -156,7 +159,7 @@ class GuzzleConnection implements ConnectionInterface
     {
 
         $request = $this->addHeadersToRequest($request);
-        dd($request);
+
         try {
             $response = $this->client->send($request);
 

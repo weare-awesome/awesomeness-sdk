@@ -36,6 +36,11 @@ class ApiResponse
     protected $data;
 
     /**
+     * @var array
+     */
+    protected $pagination;
+
+    /**
      * @return string
      */
     public function getDescription()
@@ -126,5 +131,21 @@ class ApiResponse
             return $this->data[$key];
         }
         return null;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPagination()
+    {
+        return $this->pagination;
+    }
+
+    /**
+     * @param array $pagination
+     */
+    public function setPagination($pagination)
+    {
+        $this->pagination = $pagination;
     }
 }
