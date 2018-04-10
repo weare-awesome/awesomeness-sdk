@@ -90,7 +90,7 @@ class GuzzleConnection implements ConnectionInterface
     ) {
         return $this->call(new Request(
             'GET',
-            $this->getUrl($uri)
+            $this->getUrl($uri) . '?' .http_build_query($params)
         ),
             $authentication
         );
@@ -157,7 +157,6 @@ class GuzzleConnection implements ConnectionInterface
      */
     private function call(Request $request)
     {
-
         $request = $this->addHeadersToRequest($request);
 
         try {
