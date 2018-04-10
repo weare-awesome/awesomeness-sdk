@@ -20,6 +20,11 @@ class AwesomenessBuilder
     protected $baseUrl = 'https://api.builtonawesomeness.co.uk/api/v1';
 
     /**
+     * @var null | integer
+     */
+    protected $accountId = null;
+
+    /**
      * @param $baseUrl
      *
      * @return $this
@@ -27,6 +32,17 @@ class AwesomenessBuilder
     public function setBaseUrl($baseUrl)
     {
         $this->baseUrl = $baseUrl;
+        return $this;
+    }
+
+    /**
+     * @param $id
+     *
+     * @return $this
+     */
+    public function setAccountId($id)
+    {
+        $this->accountId = $id;
         return $this;
     }
 

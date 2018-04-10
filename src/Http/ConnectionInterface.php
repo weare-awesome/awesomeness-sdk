@@ -9,6 +9,22 @@ interface ConnectionInterface
 {
 
     /**
+     * @param Authentication $authentication | null
+     */
+    public function setAuthentication(Authentication $authentication = null);
+
+    /**
+     * @param array $headers
+     */
+    public function setHeaders(array $headers = []);
+
+    /**
+     * @param $header
+     * @param $value
+     */
+    public function addHeader($header, $value);
+
+    /**
      * @param string $uri
      * @param array $params
      *

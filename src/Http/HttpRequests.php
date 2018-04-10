@@ -11,6 +11,8 @@ namespace WeAreAwesome\AwesomenessSDK\Http;
 class HttpRequests
 {
 
+    const ACCOUNT_HEADER = 'authentication-account-id';
+
     /**
      * @var ConnectionInterface
      */

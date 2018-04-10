@@ -12,6 +12,11 @@ class Awesomeness
 {
 
     /**
+     * @var int
+     */
+    protected $accountId;
+
+    /**
      * @var HttpRequests
      */
     protected $http;
@@ -46,6 +51,12 @@ class Awesomeness
         $this->http = $http;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
+    }
+
+    public function setAccountId($id)
+    {
+        $this->accountId = $id;
+        $this->http()->sync()->addHeader(HttpRequests::ACCOUNT_HEADER, $id);
     }
 
     /**
@@ -94,6 +105,7 @@ class Awesomeness
     public function setAuthentication(Authentication $authentication = null)
     {
         $this->authentication = $authentication;
+        $this->http->sync()->setAuthentication($authentication);
     }
 
     /**

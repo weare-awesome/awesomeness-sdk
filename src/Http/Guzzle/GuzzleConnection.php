@@ -17,6 +17,16 @@ class GuzzleConnection implements ConnectionInterface
 {
 
     /**
+     * @var Authentication
+     */
+    protected $authentication;
+
+    /**
+     * @var array
+     */
+    protected $headers;
+
+    /**
      * @var Client
      */
     protected $client;
@@ -36,6 +46,34 @@ class GuzzleConnection implements ConnectionInterface
     {
         $this->client = $client;
         $this->baseUrl = $baseUrl;
+    }
+
+    /**
+     * @param array $headers
+     *
+     * @return void
+     */
+
+    public function setHeaders(array $headers = [])
+    {
+        $this->headers = $headers;
+    }
+
+    /**
+     * @param $header
+     * @param $value
+     */
+    public function addHeader($header, $value)
+    {
+        $this->headers[$header] = $value;
+    }
+
+    /**
+     * @param Authentication|null $authentication
+     */
+    public function setAuthentication(Authentication $authentication = null)
+    {
+        $this->authentication = null;
     }
 
     /**
@@ -90,19 +128,34 @@ class GuzzleConnection implements ConnectionInterface
     /**
      * @param Request $request
      *
-     * @param Authentication|null $authentication
+     * @return \GuzzleHttp\Psr7\MessageTrait|Request
+     */
+    private function addHeadersToRequest(Request $request)
+    {
+        foreach ($this->headers as $key => $header) {
+            $request = $request->withAddedHeader($key, $header);
+        }
+
+        if ($this->authentication) {
+            $request = $request->withAddedHeader(
+                'Authorization',
+                'Bearer ' . $this->authentication->getAccessToken()
+            );
+        }
+
+        return $request;
+    }
+
+    /**
+     * @param Request $request
      *
      * @return null|ApiResponse
      * @throws AuthenticationException
      */
-    private function call(Request $request, Authentication $authentication = null)
+    private function call(Request $request)
     {
-        if ($authentication) {
-            $request = $request->withAddedHeader(
-                'Authorization',
-                'Bearer ' . $authentication->getAccessToken()
-            );
-        }
+
+        $request = $this->addHeadersToRequest($request);
 
         try {
             $response = $this->client->send($request);

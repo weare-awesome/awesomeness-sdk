@@ -22,6 +22,17 @@ class Contacts
         $this->awesomeness = $awesomeness;
     }
 
+    public function get(array $params = [])
+    {
+        return $this->awesomeness
+            ->http()
+            ->sync()
+            ->get(
+                'contacts',
+                $params
+            );
+    }
+
     /**
      * @return \WeAreAwesome\AwesomenessSDK\Http\ApiResponse
      */
@@ -32,9 +43,7 @@ class Contacts
             ->http()
             ->sync()
             ->get('contacts/me',
-                [],
-                $this->awesomeness
-                    ->authentication()
+                []
             );
     }
 
@@ -50,9 +59,7 @@ class Contacts
             ->sync()
             ->post(
                 'contacts/me',
-                $params,
-                $this->awesomeness
-                    ->authentication()
+                $params
             );
     }
 
