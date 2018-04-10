@@ -3,6 +3,7 @@
 namespace WeAreAwesome\AwesomenessSDK\Http\Guzzle;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -112,6 +113,8 @@ class GuzzleConnection implements ConnectionInterface
 
         } catch (ServerException $e) {
             dd($e);
+        } catch (ClientException $e) {
+            return $this->hydrateApiResponse(new ApiResponse(), $e->getResponse());
         }
     }
 

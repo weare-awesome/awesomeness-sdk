@@ -13,7 +13,6 @@ class Authenticate
 
     const USER_GRANT = 'user_authentication';
 
-
     /**
      * @var Awesomeness
      */
@@ -49,7 +48,7 @@ class Authenticate
      */
     public function asContact($email, $password, $setCookie = false)
     {
-        $apiResponse =  $this->awesomeness
+        $apiResponse = $this->awesomeness
             ->http()
             ->sync()
             ->post(
@@ -64,6 +63,10 @@ class Authenticate
                 ]
             );
 
+        if ($apiResponse->getCode() !== 200) {
+            $this->throwException($apiResponse->getCode());
+        }
+
         $this->awesomeness
             ->setAuthentication(
                 AuthenticationFactory::make(
@@ -72,8 +75,20 @@ class Authenticate
                 )
             );
 
-        if($setCookie) {
+        if ($setCookie) {
             $this->setCookie();
+        }
+    }
+
+    private function throwException($code)
+    {
+        switch ($code) {
+            case 401 : {
+                throw AuthenticationException::invalidCredentials();
+            }
+            default: {
+                throw new \Exception();
+            }
         }
     }
 
@@ -84,7 +99,7 @@ class Authenticate
      */
     public function asUser($email, $password, $setCookie = false)
     {
-        $apiResponse =  $this->awesomeness
+        $apiResponse = $this->awesomeness
             ->http()
             ->sync()
             ->post(
@@ -99,6 +114,10 @@ class Authenticate
                 ]
             );
 
+        if ($apiResponse->getCode() !== 200) {
+            $this->throwException($apiResponse->getCode());
+        }
+
         $this->awesomeness
             ->setAuthentication(
                 AuthenticationFactory::make(
@@ -106,7 +125,7 @@ class Authenticate
                     $apiResponse->getDataByKey('refresh_token')
                 )
             );
-        if($setCookie) {
+        if ($setCookie) {
             $this->setCookie();
         }
     }
