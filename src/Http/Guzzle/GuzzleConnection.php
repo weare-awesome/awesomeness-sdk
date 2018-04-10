@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use WeAreAwesome\AwesomenessSDK\Authentication\Authentication;
+use WeAreAwesome\AwesomenessSDK\Authentication\AuthenticationException;
 use WeAreAwesome\AwesomenessSDK\Http\ApiResponse;
 use WeAreAwesome\AwesomenessSDK\Http\AsyncInterface;
 use WeAreAwesome\AwesomenessSDK\Http\ConnectionInterface;
@@ -92,6 +93,7 @@ class GuzzleConnection implements ConnectionInterface
      * @param Authentication|null $authentication
      *
      * @return null|ApiResponse
+     * @throws AuthenticationException
      */
     private function call(Request $request, Authentication $authentication = null)
     {
@@ -114,6 +116,11 @@ class GuzzleConnection implements ConnectionInterface
         } catch (ServerException $e) {
             dd($e);
         } catch (ClientException $e) {
+
+            if($e->getResponse()->getStatusCode() == 401) {
+                throw AuthenticationException::notAuthenticated();
+            }
+
             return $this->hydrateApiResponse(new ApiResponse(), $e->getResponse());
         }
     }

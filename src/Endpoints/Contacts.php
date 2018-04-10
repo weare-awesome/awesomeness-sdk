@@ -22,15 +22,45 @@ class Contacts
         $this->awesomeness = $awesomeness;
     }
 
+    /**
+     * @return \WeAreAwesome\AwesomenessSDK\Http\ApiResponse
+     */
     public function me()
     {
         return $this->
         awesomeness
             ->http()
             ->sync()
-            ->get('contacts/me', [], $this->awesomeness->authentication());
+            ->get('contacts/me',
+                [],
+                $this->awesomeness
+                    ->authentication()
+            );
     }
 
+    /**
+     * @param array $params
+     *
+     * @return \WeAreAwesome\AwesomenessSDK\Http\ApiResponse
+     */
+    public function updateMe(array $params = [])
+    {
+        return $this->awesomeness
+            ->http()
+            ->sync()
+            ->post(
+                'contacts/me',
+                $params,
+                $this->awesomeness
+                    ->authentication()
+            );
+    }
+
+    /**
+     * @param $id
+     *
+     * @return \WeAreAwesome\AwesomenessSDK\Http\ApiResponse
+     */
     public function byId($id)
     {
         return $this->awesomeness
