@@ -10,11 +10,11 @@ class AuthenticationFactory
 
     /**
      * @param $accessToken
-     * @param $refreshToken
+     * @param $refreshToken | null
      *
      * @return Authentication
      */
-    public static function make($accessToken, $refreshToken)
+    public static function make($accessToken, $refreshToken = null)
     {
         $token = self::parseAccessToken($accessToken);
 

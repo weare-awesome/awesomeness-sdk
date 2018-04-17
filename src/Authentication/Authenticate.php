@@ -7,11 +7,13 @@ use WeAreAwesome\AwesomenessSDK\Http\Cookies\Cookie;
 
 class Authenticate
 {
-    const OAUTH_URL = '/users/oauth';
+    const OAUTH_URL = '/oauth';
 
     const CONTACT_GRANT = 'contact_authentication';
 
     const USER_GRANT = 'user_authentication';
+
+    const CLIENT_GRANT = 'client_credentials';
 
     /**
      * @var Awesomeness
@@ -39,6 +41,32 @@ class Authenticate
                 $cookie->getRefreshToken()
             )
         );
+    }
+
+    public function asClient()
+    {
+        $apiResponse = $this->awesomeness
+            ->http()
+            ->sync()
+            ->post(
+                self::OAUTH_URL,
+                [
+                    'grant_type' => self::CLIENT_GRANT,
+                    'client_id' => $this->awesomeness->getClientId(),
+                    'client_secret' => $this->awesomeness->getClientSecret()
+                ]
+            );
+
+        if ($apiResponse->getCode() !== 200) {
+            $this->throwException($apiResponse->getCode());
+        }
+
+        $this->awesomeness
+            ->setAuthentication(
+                AuthenticationFactory::make(
+                    $apiResponse->getDataByKey('access_token')
+                )
+            );
     }
 
     /**

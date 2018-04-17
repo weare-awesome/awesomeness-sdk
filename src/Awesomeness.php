@@ -56,7 +56,9 @@ class Awesomeness
     public function setAccountId($id)
     {
         $this->accountId = $id;
-        $this->http()->sync()->addHeader(HttpRequests::ACCOUNT_HEADER, $id);
+        $this->http()
+            ->sync()
+            ->addHeader(HttpRequests::ACCOUNT_HEADER, $id);
     }
 
     /**
