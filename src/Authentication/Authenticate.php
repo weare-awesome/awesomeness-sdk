@@ -43,7 +43,7 @@ class Authenticate
         );
     }
 
-    public function asClient()
+    public function client()
     {
         $apiResponse = $this->awesomeness
             ->http()
@@ -62,7 +62,7 @@ class Authenticate
         }
 
         $this->awesomeness
-            ->setAuthentication(
+            ->setClientAuthentication(
                 AuthenticationFactory::make(
                     $apiResponse->getDataByKey('access_token')
                 )

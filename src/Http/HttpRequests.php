@@ -8,6 +8,8 @@
 
 namespace WeAreAwesome\AwesomenessSDK\Http;
 
+use WeAreAwesome\AwesomenessSDK\Authentication\Authentication;
+
 class HttpRequests
 {
 
@@ -36,18 +38,28 @@ class HttpRequests
     }
 
     /**
+     * @param Authentication|null $authentication
+     *
      * @return ConnectionInterface
      */
-    public function sync()
+    public function sync(Authentication $authentication = null)
     {
+        if($authentication) {
+            return (clone $this->sync)->setAuthentication($authentication);
+        }
         return $this->sync;
     }
 
     /**
+     * @param Authentication|null $authentication
+     *
      * @return AsyncInterface
      */
-    public function async()
+    public function async(Authentication $authentication = null)
     {
+        if($authentication) {
+            return (clone $this->async)->setAuthentication($authentication);
+        }
         return $this->async;
     }
 

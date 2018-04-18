@@ -4,6 +4,8 @@ namespace WeAreAwesome\AwesomenessSDK;
 
 use WeAreAwesome\AwesomenessSDK\Authentication\Authenticate;
 use WeAreAwesome\AwesomenessSDK\Authentication\Authentication;
+use WeAreAwesome\AwesomenessSDK\Authentication\AuthenticationException;
+use WeAreAwesome\AwesomenessSDK\Authentication\Client;
 use WeAreAwesome\AwesomenessSDK\Endpoints\Contacts;
 use WeAreAwesome\AwesomenessSDK\Http\Cookies\Cookie;
 use WeAreAwesome\AwesomenessSDK\Http\HttpRequests;
@@ -37,6 +39,11 @@ class Awesomeness
     protected $authentication;
 
     /**
+     * @var Client
+     */
+    protected $clientAuthentication;
+
+    /**
      * Awesomeness constructor.
      *
      * @param HttpRequests $http
@@ -52,6 +59,23 @@ class Awesomeness
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
     }
+
+    /**
+     * @return Client
+     */
+    public function getClientAuthentication()
+    {
+        return $this->clientAuthentication;
+    }
+
+    /**
+     * @param Client $clientAuthentication
+     */
+    public function setClientAuthentication(Client $clientAuthentication)
+    {
+        $this->clientAuthentication = $clientAuthentication;
+    }
+
 
     public function setAccountId($id)
     {
@@ -168,5 +192,14 @@ class Awesomeness
     public function contacts()
     {
         return new Contacts($this);
+    }
+
+    public function requireClientAuthentication()
+    {
+        if(!$this->getClientAuthentication()) {
+            throw new AuthenticationException('You must be authenticated as a client', 401);
+        }
+
+        return true;
     }
 }
