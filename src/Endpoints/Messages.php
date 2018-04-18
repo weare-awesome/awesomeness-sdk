@@ -35,7 +35,12 @@ class Messages
      */
     public function sendEmailToUser($subject, $body, $userId)
     {
-        return $this->sendEmail($subject, $body, self::USER_RELATION, $userId);
+        return $this->sendEmail(
+            $subject,
+            $body,
+            self::USER_RELATION,
+            $userId
+        );
     }
 
     /**
@@ -52,9 +57,6 @@ class Messages
         $relation,
         $relationId
     ) {
-
-        $this->awesomeness
-            ->requireClientAuthentication();
 
         return $this->awesomeness
             ->http()
