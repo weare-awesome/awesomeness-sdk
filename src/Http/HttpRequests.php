@@ -45,7 +45,9 @@ class HttpRequests
     public function sync(Authentication $authentication = null)
     {
         if($authentication) {
-            return (clone $this->sync)->setAuthentication($authentication);
+            $c = clone $this->sync;
+            $c->setAuthentication($authentication);
+            return $c;
         }
         return $this->sync;
     }
@@ -58,7 +60,9 @@ class HttpRequests
     public function async(Authentication $authentication = null)
     {
         if($authentication) {
-            return (clone $this->async)->setAuthentication($authentication);
+            $c = clone $this->async;
+            $c->setAuthentication($authentication);
+            return $c;
         }
         return $this->async;
     }

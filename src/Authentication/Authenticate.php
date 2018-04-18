@@ -53,7 +53,8 @@ class Authenticate
                 [
                     'grant_type' => self::CLIENT_GRANT,
                     'client_id' => $this->awesomeness->getClientId(),
-                    'client_secret' => $this->awesomeness->getClientSecret()
+                    'client_secret' => $this->awesomeness->getClientSecret(),
+                    'scope' => 'client'
                 ]
             );
 
