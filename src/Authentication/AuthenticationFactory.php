@@ -59,7 +59,10 @@ class AuthenticationFactory
      */
     private static function parseType(Token $token)
     {
-        return explode(':', $token->getClaim('sub'));
+        return [
+            $token->getClaim('auth_type'),
+            $token->getClaim('sub')
+        ];
     }
 
     /**
