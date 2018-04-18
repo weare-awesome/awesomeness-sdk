@@ -26,7 +26,27 @@ class Messages
         $this->awesomeness = $awesomeness;
     }
 
-    public function sendEmail(
+    /**
+     * @param $subject
+     * @param $body
+     * @param $userId
+     *
+     * @return \WeAreAwesome\AwesomenessSDK\Http\ApiResponse
+     */
+    public function sendEmailToUser($subject, $body, $userId)
+    {
+        return $this->sendEmail($subject, $body, self::USER_RELATION, $userId);
+    }
+
+    /**
+     * @param $subject
+     * @param $body
+     * @param $relation
+     * @param $relationId
+     *
+     * @return \WeAreAwesome\AwesomenessSDK\Http\ApiResponse
+     */
+    private function sendEmail(
         $subject,
         $body,
         $relation,
