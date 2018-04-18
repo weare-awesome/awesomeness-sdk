@@ -7,6 +7,7 @@ use WeAreAwesome\AwesomenessSDK\Authentication\Authentication;
 use WeAreAwesome\AwesomenessSDK\Authentication\AuthenticationException;
 use WeAreAwesome\AwesomenessSDK\Authentication\Client;
 use WeAreAwesome\AwesomenessSDK\Endpoints\Contacts;
+use WeAreAwesome\AwesomenessSDK\Endpoints\Messages;
 use WeAreAwesome\AwesomenessSDK\Http\Cookies\Cookie;
 use WeAreAwesome\AwesomenessSDK\Http\HttpRequests;
 
@@ -192,6 +193,14 @@ class Awesomeness
     public function contacts()
     {
         return new Contacts($this);
+    }
+
+    /**
+     * @return Messages
+     */
+    public function messages()
+    {
+        return new Messages($this);
     }
 
     public function requireClientAuthentication()
