@@ -12,6 +12,10 @@ class Messages
      */
     protected $awesomeness;
 
+    const USER_RELATION = 'users';
+
+    const CONTACT_RELATION = 'contacts';
+
     /**
      * Messages constructor.
      *
