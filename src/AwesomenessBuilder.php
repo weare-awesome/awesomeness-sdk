@@ -3,6 +3,7 @@
 namespace WeAreAwesome\AwesomenessSDK;
 
 use GuzzleHttp\Client;
+use WeAreAwesome\AwesomenessSDK\Exceptions\AwesomenessException;
 use WeAreAwesome\AwesomenessSDK\Http\Guzzle\GuzzleAsync;
 use WeAreAwesome\AwesomenessSDK\Http\Guzzle\GuzzleConnection;
 use WeAreAwesome\AwesomenessSDK\Http\HttpRequests;
@@ -36,9 +37,14 @@ class AwesomenessBuilder
      * @param $clientSecret
      *
      * @return Awesomeness
+     * @throws AwesomenessException
      */
     public function build($clientId, $clientSecret)
     {
+        if(is_null($clientId) || is_null($clientSecret)) {
+            throw AwesomenessException::failedToBuild();
+        }
+
         $a = new Awesomeness(
             new HttpRequests(
                 new GuzzleConnection(new Client(), $this->baseUrl),
