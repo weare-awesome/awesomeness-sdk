@@ -22,6 +22,11 @@ class Contacts
         $this->awesomeness = $awesomeness;
     }
 
+    /**
+     * @param array $params
+     *
+     * @return \WeAreAwesome\AwesomenessSDK\Http\ApiResponse
+     */
     public function get(array $params = [])
     {
         return $this->awesomeness
@@ -74,5 +79,18 @@ class Contacts
             ->http()
             ->sync()
             ->get("contacts/$id");
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return \WeAreAwesome\AwesomenessSDK\Http\ApiResponse
+     */
+    public function create(array $params = [])
+    {
+        return $this->awesomeness
+            ->http()
+            ->sync($this->awesomeness->getClientAuthentication())
+            ->post('contacts', $params);
     }
 }
