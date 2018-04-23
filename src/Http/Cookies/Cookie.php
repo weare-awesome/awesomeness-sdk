@@ -55,7 +55,6 @@ class Cookie
     {
         return [
             'access_token' => $this->getAccessToken(),
-            'refresh_token' => $this->getRefreshToken()
         ];
     }
 
@@ -73,7 +72,6 @@ class Cookie
             $array = self::decodeCookieString($_COOKIE[self::COOKIE_NAME]);
             $cookie = new self();
             $cookie->setAccessToken($array['access_token']);
-            $cookie->setRefreshToken($array['refresh_token']);
 
             return $cookie;
         }
@@ -92,7 +90,6 @@ class Cookie
 
         if ($authentication = $awesomeness->authentication()) {
             $cookie->setAccessToken($authentication->getAccessToken());
-            $cookie->setRefreshToken($authentication->getRefreshToken());
         }
 
         return $cookie;
