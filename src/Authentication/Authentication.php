@@ -111,6 +111,14 @@ class Authentication
     }
 
     /**
+     * @return int
+     */
+    public function expiresInSeconds()
+    {
+        return $this->getExpires()->getTimestamp() - time();
+    }
+
+    /**
      * @return boolean
      */
     public function hasExpired()
