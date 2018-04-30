@@ -4,7 +4,7 @@ namespace WeAreAwesome\AwesomenessSDK\Endpoints;
 
 use WeAreAwesome\AwesomenessSDK\Awesomeness;
 
-class Messages
+class Messages implements EndpointInterface
 {
 
     /**
