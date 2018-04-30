@@ -38,4 +38,10 @@ interface AsyncInterface
      */
     public function call();
 
+    /**
+     * @param $authentication
+     *
+     */
+    public function setAuthentication($authentication);
+
 }

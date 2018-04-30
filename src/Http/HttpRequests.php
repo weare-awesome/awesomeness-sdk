@@ -44,12 +44,11 @@ class HttpRequests
      */
     public function sync(Authentication $authentication = null)
     {
+        $c = clone $this->sync;
         if($authentication) {
-            $c = clone $this->sync;
             $c->setAuthentication($authentication);
-            return $c;
         }
-        return $this->sync;
+        return $c;
     }
 
     /**
@@ -59,12 +58,11 @@ class HttpRequests
      */
     public function async(Authentication $authentication = null)
     {
+        $c = clone $this->async;
         if($authentication) {
-            $c = clone $this->async;
             $c->setAuthentication($authentication);
-            return $c;
         }
-        return $this->async;
+        return clone $c;
     }
 
 }
