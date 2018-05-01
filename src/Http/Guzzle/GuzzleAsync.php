@@ -4,7 +4,11 @@
 namespace WeAreAwesome\AwesomenessSDK\Http\Guzzle;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Promise\Promise;
+use function GuzzleHttp\Promise\unwrap;
 use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\ResponseInterface;
+use WeAreAwesome\AwesomenessSDK\Authentication\Authentication;
 use WeAreAwesome\AwesomenessSDK\Http\AsyncInterface;
 use WeAreAwesome\AwesomenessSDK\Http\AsyncRequest;
 
@@ -27,6 +31,11 @@ class GuzzleAsync implements AsyncInterface
     protected $baseUrl;
 
     /**
+     * @var Authentication
+     */
+    protected $authentication;
+
+    /**
      * GuzzleAsync constructor.
      *
      * @param Client $client
@@ -47,9 +56,9 @@ class GuzzleAsync implements AsyncInterface
     {
         $asyncRequest = AsyncRequest::make(
             'GET',
-                    $this->getUrl($uri),
-                    $params,
-                    $headers
+            $this->getUrl($uri),
+            $params,
+            $headers
         );
 
         $this->addAsyncRequest($asyncRequest);
@@ -58,7 +67,7 @@ class GuzzleAsync implements AsyncInterface
 
     private function getUrl($uri)
     {
-        return $this->baseUrl . '/' . trim($uri, '/');
+        return trim($this->baseUrl, '/') . '/' . trim($uri, '/');
     }
 
     public function post($uri, array $params = [], array $headers = [])
@@ -76,7 +85,27 @@ class GuzzleAsync implements AsyncInterface
 
     public function call()
     {
-        // TODO: Implement call() method.
+        $promises = [];
+        foreach ($this->requests as $request) {
+            $promises[] = $this->client->requestAsync(
+                $request->getMethod(),
+                $request->getUrl()
+            )->then(function(ResponseInterface $response) use($request) {
+                $request->setResponse($response);
+            });
+        }
+
+        $results = unwrap($promises);
+
+
     }
 
+    /**
+     * @param $authentication
+     *
+     */
+    public function setAuthentication(Authentication $authentication = null)
+    {
+        $this->authentication = $authentication;
+    }
 }

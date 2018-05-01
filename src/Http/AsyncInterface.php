@@ -3,6 +3,8 @@
 
 namespace WeAreAwesome\AwesomenessSDK\Http;
 
+use WeAreAwesome\AwesomenessSDK\Authentication\Authentication;
+
 interface AsyncInterface
 {
 
@@ -39,9 +41,9 @@ interface AsyncInterface
     public function call();
 
     /**
-     * @param $authentication
+     * @param Authentication $authentication
      *
      */
-    public function setAuthentication($authentication);
+    public function setAuthentication(Authentication $authentication);
 
 }
