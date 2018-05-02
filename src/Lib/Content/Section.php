@@ -2,6 +2,8 @@
 
 namespace WeAreAwesome\AwesomenessSDK\Lib\Content;
 
+use WeAreAwesome\AwesomenessSDK\Lib\Content\Types\ContentItem;
+
 class Section
 {
 
@@ -66,5 +68,27 @@ class Section
     public function setContent(ContentCollection $content)
     {
         $this->content = $content;
+    }
+
+    /**
+     * @param $title
+     *
+     * @return string
+     */
+    public function getRaw($title)
+    {
+        $content = $this->content->first(function(ContentItem $item) use($title) {
+            return $item->getTitle() == $title;
+        });
+
+        return $content ? $content->getBody() : '';
+    }
+
+    /**
+     * @return array
+     */
+    public function all()
+    {
+        return $this->content->all();
     }
 }

@@ -24,12 +24,25 @@ class Page extends ContentItem
     {
         return $this->body;
     }
+
     /**
      * @return SectionCollection
      */
     public function getSections()
     {
         return $this->sections;
+    }
+
+    /**
+     * @param $title
+     *
+     * @return Section | null
+     */
+    public function section($title)
+    {
+        return $this->sections->first(function(Section $section) use($title) {
+            return $section->getTitle() == $title;
+        });
     }
 
     /**
@@ -61,8 +74,12 @@ class Page extends ContentItem
      */
     public function addAdditionalContent(PageCollection $additionalContent)
     {
-        $this->additionalContent = $additionalContent
-            ->merge($additionalContent);
+        if($this->additionalContent) {
+            $this->additionalContent = $this->additionalContent
+                ->merge($additionalContent);
+        }else {
+            $this->setAdditionalContent($additionalContent);
+        }
     }
 
     /**
@@ -72,7 +89,7 @@ class Page extends ContentItem
      */
     public function getAdditionalContentByType($type)
     {
-        return $this->additionalContent->filter(function($item) use($type) {
+        return $this->additionalContent->filter(function ($item) use ($type) {
             return $item->getType() == $type;
         });
     }
