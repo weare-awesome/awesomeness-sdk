@@ -17,6 +17,11 @@ class ContentItem
     protected $body;
 
     /**
+     * @var string
+     */
+    protected $type;
+
+    /**
      * @var MetaCollection
      */
     protected $meta;
@@ -133,6 +138,24 @@ class ContentItem
     }
 
     /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+
+
+    /**
      * @param $params
      *
      * @return null|ContentItem
@@ -145,10 +168,23 @@ class ContentItem
             case('html'):
                 $item = new HTML();
                 break;
+            case('image'):
+                $item = new Image();
+                break;
+            case('video'):
+                $item = new Video();
+                break;
+            case('text'):
+                $item = new Text();
+                break;
+            case('link'):
+                $item = new Link();
+                break;
         }
         if(!is_null($item)) {
             $item->setTitle($params['title']);
             $item->setBody($params['body']);
+            $item->setType($params['type']);
             $item->setOrder($params['order']);
         }
 

@@ -14,12 +14,24 @@ class Content implements EndpointInterface
      */
     protected $awesomeness;
 
+    /**
+     * Content constructor.
+     *
+     * @param Awesomeness $awesomeness
+     */
     public function __construct(Awesomeness $awesomeness)
     {
         $this->awesomeness = $awesomeness;
     }
 
-
+    /**
+     * @param $slug
+     * @param null $type
+     * @param null $distributionId
+     * @param array $additionalContent
+     *
+     * @return \WeAreAwesome\AwesomenessSDK\Lib\Content\Page|\WeAreAwesome\AwesomenessSDK\Lib\Content\PageCollection
+     */
     public function getPageBySlug(
         $slug,
         $type = null,
@@ -52,8 +64,22 @@ class Content implements EndpointInterface
         $requests->call();
 
         $page = PageFactory::makeFromApiResponse($pageRequest->getResponse());
+
+        foreach ($contentRequests as $contentRequest) {
+            if($content = PageFactory::makeFromApiResponse($contentRequest->getResponse())) {
+                $page->addAdditionalContent($content);
+            }
+        }
+
+        return $page;
     }
 
+    /**
+     * @param $slug
+     * @param null $type
+     * @param null $distributionId
+     * @param array $additionalContent
+     */
     public function getBySlug(
         $slug,
         $type = null,

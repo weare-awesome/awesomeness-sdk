@@ -13,6 +13,11 @@ class Page extends ContentItem
     protected $sections;
 
     /**
+     * @var PageCollection
+     */
+    protected $additionalContent;
+
+    /**
      * @return string
      */
     public function getDescription()
@@ -33,5 +38,42 @@ class Page extends ContentItem
     public function setSections($sections)
     {
         $this->sections = $sections;
+    }
+
+    /**
+     * @return PageCollection
+     */
+    public function getAdditionalContent()
+    {
+        return $this->additionalContent;
+    }
+
+    /**
+     * @param PageCollection $additionalContent
+     */
+    public function setAdditionalContent(PageCollection $additionalContent)
+    {
+        $this->additionalContent = $additionalContent;
+    }
+
+    /**
+     * @param PageCollection $additionalContent
+     */
+    public function addAdditionalContent(PageCollection $additionalContent)
+    {
+        $this->additionalContent = $additionalContent
+            ->merge($additionalContent);
+    }
+
+    /**
+     * @param $type
+     *
+     * @return PageCollection
+     */
+    public function getAdditionalContentByType($type)
+    {
+        return $this->additionalContent->filter(function($item) use($type) {
+            return $item->getType() == $type;
+        });
     }
 }

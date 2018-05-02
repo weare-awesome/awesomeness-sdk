@@ -22,6 +22,11 @@ class PageFactory
         if (count($items) == 1) {
             return self::makeContent($items[0]);
         }
+        return new PageCollection(
+            array_map(function($item){
+                return self::makeContent($item);
+            }, $items)
+        );
     }
 
     /**
@@ -35,6 +40,7 @@ class PageFactory
         $page->setTitle($params['title']);
         $page->setBody($params['body']);
         $page->setSlug($params['slug']);
+        $page->setType($params['type']);
         $page->setPublishDate($params['publish_date']);
         $page->setSections(
             new SectionCollection(
