@@ -1,12 +1,12 @@
 <?php
 
-
 namespace WeAreAwesome\AwesomenessSDK\Http\Guzzle;
 
 use GuzzleHttp\Client;
 use function GuzzleHttp\Promise\unwrap;
 use Psr\Http\Message\ResponseInterface;
 use WeAreAwesome\AwesomenessSDK\Authentication\Authentication;
+use WeAreAwesome\AwesomenessSDK\Http\ApiResponse;
 use WeAreAwesome\AwesomenessSDK\Http\AsyncInterface;
 use WeAreAwesome\AwesomenessSDK\Http\AsyncRequest;
 
@@ -37,8 +37,6 @@ class GuzzleAsync implements AsyncInterface
      * @var array
      */
     protected $headers;
-
-
 
     /**
      * GuzzleAsync constructor.
@@ -74,10 +72,11 @@ class GuzzleAsync implements AsyncInterface
             'GET',
             $this->getUrl($uri),
             $params,
-            $headers
+            array_merge($headers, $this->headers)
         );
 
         $this->addAsyncRequest($asyncRequest);
+
         return $asyncRequest;
     }
 
@@ -104,10 +103,11 @@ class GuzzleAsync implements AsyncInterface
             'POST',
             $this->getUrl($uri),
             $params,
-            $headers
+            array_merge($headers, $this->headers)
         );
 
         $this->addAsyncRequest($asyncRequest);
+
         return $asyncRequest;
     }
 
@@ -120,17 +120,23 @@ class GuzzleAsync implements AsyncInterface
         foreach ($this->requests as $request) {
             $promises[] = $this->client->requestAsync(
                 $request->getMethod(),
-                $request->getUrl(),
+                (
+                strtolower($request->getMethod()) == 'get'
+                    ? $request->getUrl() . '?' . http_build_query($request->getParams())
+                    : $request->getUrl()
+                ),
                 [
-                    'headers' => $this->headers
+                    'body' => json_encode($request->getParams()),
+                    'headers' => $request->getHeaders()
                 ]
-            )->then(function(ResponseInterface $response) use($request) {
-                $request->setResponse($response);
+            )->then(function (ResponseInterface $response) use ($request) {
+                $request->setResponse(
+                    ApiResponse::makeFromPsr7Response($response)
+                );
             });
         }
 
-        $results = unwrap($promises);
-
+        unwrap($promises);
 
     }
 

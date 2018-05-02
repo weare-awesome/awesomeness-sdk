@@ -26,23 +26,6 @@ class Content implements EndpointInterface
         array $additionalContent = []
     )
     {
-        $response = $this->getPageBySlug(
-            $slug,
-            $type,
-            $distributionId,
-            $additionalContent
-        );
-
-        dd($response);
-
-    }
-
-    public function getBySlug(
-        $slug,
-        $type = null,
-        $distributionId = null,
-        array $additionalContent = []
-    ) {
         $params = [
             'slug' => $slug
         ];
@@ -58,7 +41,24 @@ class Content implements EndpointInterface
 
         $page = $requests->get('/content/slug', ['slug' => $slug]);
 
+        $content = [];
+
+        if($additionalContent) {
+            foreach ($additionalContent as $params) {
+                $content[] = $requests->get('content', $params);
+            }
+        }
         $requests->call();
+
+    }
+
+    public function getBySlug(
+        $slug,
+        $type = null,
+        $distributionId = null,
+        array $additionalContent = []
+    ) {
+
     }
 
 }

@@ -3,6 +3,8 @@
 
 namespace WeAreAwesome\AwesomenessSDK\Http;
 
+use GuzzleHttp\Psr7\Response;
+
 /**
  * Class ApiResponse
  * @package WeAreAwesome\AwesomenessSDK\Http
@@ -147,5 +149,28 @@ class ApiResponse
     public function setPagination($pagination)
     {
         $this->pagination = $pagination;
+    }
+
+    /**
+     * @param Response $response
+     *
+     * @return ApiResponse
+     */
+    public static function makeFromPsr7Response(Response $response)
+    {
+        $body = json_decode($response->getBody(), true);
+
+        $apiResponse = new static();
+
+        $apiResponse->setMessage($body['message']);
+        $apiResponse->setCode($body['code']);
+        $apiResponse->setData($body['data']);
+        $apiResponse->setErrors($body['errors']);
+        $apiResponse->setDescription($body['description']);
+        if(isset($body['pagination'])) {
+            $apiResponse->setPagination($body['pagination']);
+        }
+
+        return $apiResponse;
     }
 }

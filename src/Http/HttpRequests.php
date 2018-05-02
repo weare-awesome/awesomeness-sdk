@@ -43,8 +43,8 @@ class HttpRequests
      */
     public function addHeader($header, $value)
     {
-        $this->sync()->addHeader($header, $value);
-        $this->async()->addHeader($header, $value);
+        $this->sync->addHeader($header, $value);
+        $this->async->addHeader($header, $value);
     }
 
     /**
