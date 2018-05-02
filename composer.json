@@ -4,9 +4,7 @@
     "require": {
         "guzzlehttp/guzzle": "^6.3",
         "lcobucci/jwt": "^3.2.2",
-        "tightenco/collect": "^5.5",
-        "test/test" : "*"
-
+        "tightenco/collect": "dev-master"
     },
     "autoload": {
         "psr-4": {
