@@ -26,7 +26,6 @@ class PageFactory
     private static function makeContent($params)
     {
         $page = new Page();
-
         $page->setTitle($params['title']);
         $page->setBody($params['body']);
         $page->setSlug($params['slug']);
@@ -34,14 +33,18 @@ class PageFactory
         $page->setSections(
             new SectionCollection(
                 array_map(
-                    function ($section) {
-
+                    function ($item) {
+                        if($item['type'] == 'section') {
+                            $section = new Section();
+                            $section->setTitle($item['title']);
+                            $section->setDisplayed((strtotime($item['publish_date']) < time()));
+                            return $section;
+                        }
                     },
                     $params['children']
                 )
             )
         );
-
         return $page;
     }
 }

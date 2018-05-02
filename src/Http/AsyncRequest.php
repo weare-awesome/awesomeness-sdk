@@ -18,7 +18,7 @@ class AsyncRequest
     protected $url;
 
     /**
-     * @var Response
+     * @var ApiResponse
      */
     protected $response;
 
@@ -66,7 +66,7 @@ class AsyncRequest
     }
 
     /**
-     * @return Response
+     * @return ApiResponse
      */
     public function getResponse()
     {
@@ -74,9 +74,9 @@ class AsyncRequest
     }
 
     /**
-     * @param Response $response
+     * @param ApiResponse $response
      */
-    public function setResponse($response)
+    public function setResponse(ApiResponse $response)
     {
         $this->response = $response;
     }
