@@ -46,4 +46,15 @@ interface AsyncInterface
      */
     public function setAuthentication(Authentication $authentication);
 
+    /**
+     * @param array $headers
+     */
+    public function setHeaders(array $headers = []);
+
+    /**
+     * @param $header
+     * @param $value
+     */
+    public function addHeader($header, $value);
+
 }

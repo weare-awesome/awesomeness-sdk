@@ -78,13 +78,16 @@ class Awesomeness
         $this->clientAuthentication = $clientAuthentication;
     }
 
-
+    /**
+     * @param integer $id
+     */
     public function setAccountId($id)
     {
         $this->accountId = $id;
-        $this->http()
-            ->sync()
-            ->addHeader(HttpRequests::ACCOUNT_HEADER, $id);
+        $this->http->addHeader(
+            HttpRequests::ACCOUNT_HEADER,
+            $id
+        );
     }
 
     /**

@@ -4,9 +4,7 @@
 namespace WeAreAwesome\AwesomenessSDK\Http\Guzzle;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Promise\Promise;
 use function GuzzleHttp\Promise\unwrap;
-use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\ResponseInterface;
 use WeAreAwesome\AwesomenessSDK\Authentication\Authentication;
 use WeAreAwesome\AwesomenessSDK\Http\AsyncInterface;
@@ -36,6 +34,13 @@ class GuzzleAsync implements AsyncInterface
     protected $authentication;
 
     /**
+     * @var array
+     */
+    protected $headers;
+
+
+
+    /**
      * GuzzleAsync constructor.
      *
      * @param Client $client
@@ -47,11 +52,22 @@ class GuzzleAsync implements AsyncInterface
         $this->baseUrl = $baseUrl;
     }
 
+    /**
+     * @param AsyncRequest $asyncRequest
+     *
+     */
     public function addAsyncRequest(AsyncRequest $asyncRequest)
     {
         $this->requests[] = $asyncRequest;
     }
 
+    /**
+     * @param $uri
+     * @param array $params
+     * @param array $headers
+     *
+     * @return AsyncRequest
+     */
     public function get($uri, array $params = [], array $headers = [])
     {
         $asyncRequest = AsyncRequest::make(
@@ -65,11 +81,23 @@ class GuzzleAsync implements AsyncInterface
         return $asyncRequest;
     }
 
+    /**
+     * @param $uri
+     *
+     * @return string
+     */
     private function getUrl($uri)
     {
         return trim($this->baseUrl, '/') . '/' . trim($uri, '/');
     }
 
+    /**
+     * @param $uri
+     * @param array $params
+     * @param array $headers
+     *
+     * @return AsyncRequest
+     */
     public function post($uri, array $params = [], array $headers = [])
     {
         $asyncRequest = AsyncRequest::make(
@@ -83,13 +111,19 @@ class GuzzleAsync implements AsyncInterface
         return $asyncRequest;
     }
 
+    /**
+     * @return void
+     */
     public function call()
     {
         $promises = [];
         foreach ($this->requests as $request) {
             $promises[] = $this->client->requestAsync(
                 $request->getMethod(),
-                $request->getUrl()
+                $request->getUrl(),
+                [
+                    'headers' => $this->headers
+                ]
             )->then(function(ResponseInterface $response) use($request) {
                 $request->setResponse($response);
             });
@@ -108,4 +142,22 @@ class GuzzleAsync implements AsyncInterface
     {
         $this->authentication = $authentication;
     }
+
+    /**
+     * @param array $headers
+     */
+    public function setHeaders(array $headers = [])
+    {
+        $this->headers = $headers;
+    }
+
+    /**
+     * @param $header
+     * @param $value
+     */
+    public function addHeader($header, $value)
+    {
+        $this->headers[$header] = $value;
+    }
+
 }

@@ -38,6 +38,16 @@ class HttpRequests
     }
 
     /**
+     * @param string $header
+     * @param mixed $value
+     */
+    public function addHeader($header, $value)
+    {
+        $this->sync()->addHeader($header, $value);
+        $this->async()->addHeader($header, $value);
+    }
+
+    /**
      * @param Authentication|null $authentication
      *
      * @return ConnectionInterface
@@ -62,7 +72,7 @@ class HttpRequests
         if($authentication) {
             $c->setAuthentication($authentication);
         }
-        return clone $c;
+        return $c;
     }
 
 }
