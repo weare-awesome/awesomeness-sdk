@@ -78,7 +78,7 @@ class Section
     public function getRaw($title)
     {
         $content = $this->content->first(function(ContentItem $item) use($title) {
-            return $item->getTitle() == $title;
+            return strtolower($item->getTitle()) == strtolower($title);
         });
 
         return $content ? $content->getBody() : '';
