@@ -32,6 +32,11 @@ class ContentItem
     protected $publishDate;
 
     /**
+     * @var int
+     */
+    protected $order;
+
+    /**
      * @return string
      */
     public function getTitle()
@@ -109,5 +114,44 @@ class ContentItem
     public function setPublishDate($publishDate)
     {
         $this->publishDate = $publishDate;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param int $order
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    }
+
+    /**
+     * @param $params
+     *
+     * @return null|ContentItem
+     */
+    public static function make($params)
+    {
+        $item = null;
+
+        switch ($params['type']) {
+            case('html'):
+                $item = new HTML();
+                break;
+        }
+        if(!is_null($item)) {
+            $item->setTitle($params['title']);
+            $item->setBody($params['body']);
+            $item->setOrder($params['order']);
+        }
+
+        return $item;
     }
 }

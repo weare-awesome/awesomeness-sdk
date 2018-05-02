@@ -4,6 +4,7 @@
 namespace WeAreAwesome\AwesomenessSDK\Endpoints;
 
 use WeAreAwesome\AwesomenessSDK\Awesomeness;
+use WeAreAwesome\AwesomenessSDK\Lib\Content\PageFactory;
 
 class Content implements EndpointInterface
 {
@@ -39,17 +40,18 @@ class Content implements EndpointInterface
         }
         $requests = $this->awesomeness->http()->async();
 
-        $page = $requests->get('/content/slug', ['slug' => $slug]);
+        $pageRequest = $requests->get('/content/slug', ['slug' => $slug]);
 
-        $content = [];
+        $contentRequests = [];
 
         if($additionalContent) {
             foreach ($additionalContent as $params) {
-                $content[] = $requests->get('content', $params);
+                $contentRequests[] = $requests->get('content', $params);
             }
         }
         $requests->call();
 
+        $page = PageFactory::makeFromApiResponse($pageRequest->getResponse());
     }
 
     public function getBySlug(

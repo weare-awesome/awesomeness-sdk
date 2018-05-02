@@ -16,6 +16,11 @@ class Section
     protected $displayed;
 
     /**
+     * @var ContentCollection
+     */
+    protected $content;
+
+    /**
      * @return string
      */
     public function getTitle()
@@ -45,5 +50,21 @@ class Section
     public function setDisplayed($displayed)
     {
         $this->displayed = $displayed;
+    }
+
+    /**
+     * @return ContentCollection
+     */
+    public function content()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param ContentCollection $content
+     */
+    public function setContent(ContentCollection $content)
+    {
+        $this->content = $content;
     }
 }
