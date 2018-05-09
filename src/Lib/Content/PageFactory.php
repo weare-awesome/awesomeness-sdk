@@ -37,6 +37,7 @@ class PageFactory
     private static function makeContent($params)
     {
         $page = new Page();
+        $page->setId($params['id']);
         $page->setTitle($params['title']);
         $page->setBody($params['body']);
         $page->setSlug($params['slug']);

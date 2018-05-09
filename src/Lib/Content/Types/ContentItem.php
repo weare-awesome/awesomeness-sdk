@@ -205,6 +205,7 @@ class ContentItem
                 break;
         }
         if(!is_null($item)) {
+            $item->setId($params['id']);
             $item->setTitle($params['title']);
             $item->setBody($params['body']);
             $item->setType($params['type']);
