@@ -85,10 +85,33 @@ class Section
     }
 
     /**
+     * @param array $exclude
+     *
+     * @return array
+     * @internal param array $exlude
+     *
+     */
+    public function all(array $exclude = [])
+    {
+        return $this->content->filter(function(ContentItem $item) use ($exclude) {
+            if(in_array($item->getTitle(), $exclude)) {
+                return false;
+            }
+            return true;
+        })->toArray();
+    }
+
+    /**
+     * @param $type
+     *
      * @return array
      */
-    public function all()
-    {
-        return $this->content->all();
+    public function allOfType($type) {
+        return $this->content->filter(function(ContentItem $item) use ($type) {
+            if($item->getType() == $type) {
+                return true;
+            }
+            return false;
+        })->toArray();
     }
 }
