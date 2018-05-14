@@ -5,6 +5,9 @@ namespace WeAreAwesome\AwesomenessSDK\Endpoints;
 
 use WeAreAwesome\AwesomenessSDK\Awesomeness;
 use WeAreAwesome\AwesomenessSDK\Http\RequestInformation;
+use WeAreAwesome\AwesomenessSDK\Lib\Content\ContentCollection;
+use WeAreAwesome\AwesomenessSDK\Lib\Content\Page;
+use WeAreAwesome\AwesomenessSDK\Lib\Content\PageCollection;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\PageFactory;
 
 class Content implements EndpointInterface
@@ -68,6 +71,9 @@ class Content implements EndpointInterface
 
         foreach ($contentRequests as $contentRequest) {
             if($content = PageFactory::makeFromApiResponse($contentRequest->getResponse())) {
+                if($content instanceof Page) {
+                    $content = PageCollection::make([$content]);
+                }
                 $page->addAdditionalContent($content);
             }
         }
