@@ -89,6 +89,9 @@ class Page extends ContentItem
      */
     public function getAdditionalContentByType($type)
     {
+        if(is_null($this->additionalContent)) {
+            return new PageCollection();
+        }
         return $this->additionalContent->filter(function ($item) use ($type) {
             return $item->getType() == $type;
         });
