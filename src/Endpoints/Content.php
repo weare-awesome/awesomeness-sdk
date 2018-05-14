@@ -4,6 +4,7 @@
 namespace WeAreAwesome\AwesomenessSDK\Endpoints;
 
 use WeAreAwesome\AwesomenessSDK\Awesomeness;
+use WeAreAwesome\AwesomenessSDK\Http\RequestInformation;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\PageFactory;
 
 class Content implements EndpointInterface
@@ -52,7 +53,7 @@ class Content implements EndpointInterface
         }
         $requests = $this->awesomeness->http()->async();
 
-        $pageRequest = $requests->get('/content/slug', ['slug' => $slug]);
+        $pageRequest = $requests->get('/content/slug', ['slug' => $slug, 'content_view' => (RequestInformation::make())->toArray()]);
 
         $contentRequests = [];
 

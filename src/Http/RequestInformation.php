@@ -91,6 +91,19 @@ class RequestInformation
     }
 
     /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'referer' => $this->getReferer(),
+            'ip_address' => $this->getIp(),
+            'distribution' => $this->getDistribution(),
+            'client' => $this->getClient()
+        ];
+    }
+
+    /**
      * @return RequestInformation
      */
     public static function make()
