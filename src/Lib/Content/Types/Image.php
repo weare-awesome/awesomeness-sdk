@@ -6,6 +6,6 @@ Class Image extends ContentItem implements ContentTypeInterface
 {
     public function render(array $options = [])
     {
-        return $this->body;
+        return "<img src='$this->body' alt='$this->title'>";
     }
 }
