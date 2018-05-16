@@ -1,8 +1,9 @@
 <?php
 
-
 namespace WeAreAwesome\AwesomenessSDK\Endpoints;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use WeAreAwesome\AwesomenessSDK\Awesomeness;
 use WeAreAwesome\AwesomenessSDK\Http\RequestInformation;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\ContentCollection;
@@ -36,32 +37,31 @@ class Content implements EndpointInterface
      *
      * @return \WeAreAwesome\AwesomenessSDK\Lib\Content\Page|\WeAreAwesome\AwesomenessSDK\Lib\Content\PageCollection
      */
-    public function  getPageBySlug(
+    public function getPageBySlug(
         $slug,
         $type = null,
         $distributionId = null,
         array $additionalContent = []
-    )
-    {
+    ) {
         $params = [
             'slug' => $slug
         ];
 
-        if($type) {
+        if ($type) {
             $params['type'] = $type;
         }
 
-        if($distributionId) {
+        if ($distributionId) {
             $params['distribution_id'] = $distributionId;
         }
         $requests = $this->awesomeness->http()->async();
 
-        $pageRequest = $requests->get('/content/slug', array_merge($params ,[
+        $pageRequest = $requests->get('/content/slug', array_merge($params, [
             'content_view' => (RequestInformation::make())->toArray()
         ]));
         $contentRequests = [];
 
-        if($additionalContent) {
+        if ($additionalContent) {
             foreach ($additionalContent as $params) {
                 $contentRequests[] = $requests->get('content', $params);
             }
@@ -71,8 +71,8 @@ class Content implements EndpointInterface
         $page = PageFactory::makeFromApiResponse($pageRequest->getResponse());
 
         foreach ($contentRequests as $contentRequest) {
-            if($content = PageFactory::makeFromApiResponse($contentRequest->getResponse())) {
-                if($content instanceof Page) {
+            if ($content = PageFactory::makeFromApiResponse($contentRequest->getResponse())) {
+                if ($content instanceof Page) {
                     $content = PageCollection::make([$content]);
                 }
                 $page->addAdditionalContent($content);
@@ -95,6 +95,34 @@ class Content implements EndpointInterface
         array $additionalContent = []
     ) {
 
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return LengthAwarePaginator|null
+     */
+    public function index(array $params = [])
+    {
+        $response = $this->awesomeness
+            ->http()
+            ->sync()
+            ->get('content', $params);
+
+        if ($response->getCode() !== 200) {
+            return null;
+        }
+
+        $content = PageFactory::makeFromApiResponse($response);
+        $pagination = $response->getPagination();
+        $content = new LengthAwarePaginator(
+            $content,
+            100,
+            $pagination['per_page'],
+            $pagination['current_page']
+        );
+
+        return $content;
     }
 
 }

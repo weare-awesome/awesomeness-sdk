@@ -4,7 +4,8 @@
     "require": {
         "guzzlehttp/guzzle": "^6.3",
         "lcobucci/jwt": "^3.2.2",
-        "illuminate/support": "^5.5"
+        "illuminate/support": "^5.5",
+        "illuminate/pagination": "^5.5"
     },
     "autoload": {
         "psr-4": {
