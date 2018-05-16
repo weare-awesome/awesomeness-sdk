@@ -36,7 +36,7 @@ class Content implements EndpointInterface
      *
      * @return \WeAreAwesome\AwesomenessSDK\Lib\Content\Page|\WeAreAwesome\AwesomenessSDK\Lib\Content\PageCollection
      */
-    public function getPageBySlug(
+    public function  getPageBySlug(
         $slug,
         $type = null,
         $distributionId = null,
@@ -56,8 +56,9 @@ class Content implements EndpointInterface
         }
         $requests = $this->awesomeness->http()->async();
 
-        $pageRequest = $requests->get('/content/slug', ['slug' => $slug, 'content_view' => (RequestInformation::make())->toArray()]);
-
+        $pageRequest = $requests->get('/content/slug', array_merge($params ,[
+            'content_view' => (RequestInformation::make())->toArray()
+        ]));
         $contentRequests = [];
 
         if($additionalContent) {
