@@ -42,7 +42,7 @@ class PageFactory
         $page->setBody($params['body']);
         $page->setSlug($params['slug']);
         $page->setType($params['type']);
-        $page->setPublishDate($params['publish_date']);
+        $page->setPublishDate(new \DateTime($params['publish_date']));
         $page->setSections(
             new SectionCollection(
                 self::mapSections($params['children'])
