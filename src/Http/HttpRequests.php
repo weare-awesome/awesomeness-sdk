@@ -48,6 +48,14 @@ class HttpRequests
     }
 
     /**
+     * @param Authentication $authentication
+     */
+    public function setAuthentication(Authentication $authentication) {
+        $this->sync->setAuthentication($authentication);
+        $this->async->setAuthentication($authentication);
+    }
+
+    /**
      * @param Authentication|null $authentication
      *
      * @return ConnectionInterface

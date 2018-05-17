@@ -136,7 +136,7 @@ class Awesomeness
     public function setAuthentication(Authentication $authentication = null)
     {
         $this->authentication = $authentication;
-        $this->http->sync()->setAuthentication($authentication);
+        $this->http->setAuthentication($authentication);
     }
 
     /**
