@@ -17,15 +17,6 @@ class Media implements EndpointInterface
         $this->awesomeness = $awesomeness;
     }
 
-    /**
-     * @param $fileContents
-     * @param $name
-     * @param $mimeType
-     * @param $type
-     * @param bool $public
-     *
-     * @return mixed
-     */
     public function upload(
         $fileContents,
         $name,
@@ -45,7 +36,6 @@ class Media implements EndpointInterface
                 'name' => $name,
                 'is_public' => $public
             ]),
-            $name,
             $fileContents
         );
 
