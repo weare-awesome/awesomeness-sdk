@@ -17,6 +17,15 @@ class Media implements EndpointInterface
         $this->awesomeness = $awesomeness;
     }
 
+    /**
+     * @param $fileContents
+     * @param $name
+     * @param $mimeType
+     * @param $type
+     * @param bool $public
+     *
+     * @return mixed
+     */
     public function upload(
         $fileContents,
         $name,
@@ -30,16 +39,16 @@ class Media implements EndpointInterface
 
         $con->addHeader('guru-file-type', $mimeType);
 
-        $response = $con->post(
+        $response = $con->sendFile(
             '/media?' . http_build_query([
                 'type' => $type,
                 'name' => $name,
                 'is_public' => $public
-            ],
-                $fileContents
-            )
+            ]),
+            $name,
+            $fileContents
         );
 
-        dd($response);
+        return $response;
     }
 }

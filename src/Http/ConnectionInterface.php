@@ -44,4 +44,11 @@ interface ConnectionInterface
      */
     public function post($uri, array $params = [], Authentication $authentication = null);
 
+    /**
+     * @param $uri
+     * @param $fileContents
+     *
+     * @return mixed
+     */
+    public function sendFile($uri,  $fileContents);
 }

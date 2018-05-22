@@ -171,7 +171,7 @@ class GuzzleConnection implements ConnectionInterface
         } catch (ServerException $e) {
             dd($e);
         } catch (ClientException $e) {
-
+            dd($e);
             if($e->getResponse()->getStatusCode() == 401) {
                 throw AuthenticationException::notAuthenticated();
             }
@@ -201,6 +201,25 @@ class GuzzleConnection implements ConnectionInterface
         ),
             $authentication
         );
+    }
+
+    /**
+     * @param $uri
+     * @param $fileContents
+     *
+     * @return null|ApiResponse
+     */
+    public function sendFile(
+        $uri,
+        $fileContents
+    )
+    {
+        return $this->call(new Request(
+            'POST',
+            $this->getUrl($uri),
+            [],
+            $fileContents
+        ));
     }
 
     /**
