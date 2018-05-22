@@ -8,6 +8,7 @@ use WeAreAwesome\AwesomenessSDK\Authentication\AuthenticationException;
 use WeAreAwesome\AwesomenessSDK\Authentication\Client;
 use WeAreAwesome\AwesomenessSDK\Endpoints\Contacts;
 use WeAreAwesome\AwesomenessSDK\Endpoints\Content;
+use WeAreAwesome\AwesomenessSDK\Endpoints\Media;
 use WeAreAwesome\AwesomenessSDK\Endpoints\Messages;
 use WeAreAwesome\AwesomenessSDK\Http\Cookies\Cookie;
 use WeAreAwesome\AwesomenessSDK\Http\HttpRequests;
@@ -213,6 +214,14 @@ class Awesomeness
     public function content()
     {
         return new Content($this);
+    }
+
+    /**
+     * @return Media
+     */
+    public function media()
+    {
+        return new Media($this);
     }
 
     public function requireClientAuthentication()
