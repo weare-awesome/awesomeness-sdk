@@ -4,7 +4,7 @@ namespace WeAreAwesome\AwesomenessSDK\Lib\Content\Types;
 
 use WeAreAwesome\AwesomenessSDK\Lib\Content\MetaCollection;
 
-class ContentItem
+class ContentItem implements ContentTypeInterface
 {
 
     /**
@@ -176,6 +176,10 @@ class ContentItem
         $this->type = $type;
     }
 
+    public function render(array $options = [])
+    {
+
+    }
 
 
     /**
@@ -202,6 +206,12 @@ class ContentItem
                 break;
             case('link'):
                 $item = new Link();
+                break;
+            case('text-box'):
+                $item = new TextBox();
+                break;
+            default:
+                $item = new static();
                 break;
         }
         if(!is_null($item)) {
