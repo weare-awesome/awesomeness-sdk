@@ -7,6 +7,7 @@ use Illuminate\Pagination\Paginator;
 use WeAreAwesome\AwesomenessSDK\Awesomeness;
 use WeAreAwesome\AwesomenessSDK\Http\RequestInformation;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\ContentCollection;
+use WeAreAwesome\AwesomenessSDK\Lib\Content\ContentMap;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\Page;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\PageCollection;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\PageFactory;
@@ -44,7 +45,7 @@ class Content implements EndpointInterface
         $type = null,
         $distributionId = null,
         array $additionalContent = [],
-        $includeMap = false
+        $includeMap = true
     ) {
         $params = [
             'slug' => $slug
@@ -62,6 +63,8 @@ class Content implements EndpointInterface
         $pageRequest = $requests->get('/content/slug', array_merge($params, [
             'content_view' => (RequestInformation::make())->toArray()
         ]));
+
+
         $contentRequests = [];
 
         if ($additionalContent) {
@@ -80,7 +83,10 @@ class Content implements EndpointInterface
 
         $page = PageFactory::makeFromApiResponse($pageRequest->getResponse());
 
-        $page->setContentMap($mapRequest);
+        if(!is_null($mapRequest)) {
+            $page->setContentMap(ContentMap::makeFromResponse($mapRequest->getResponse()));
+
+        }
 
         foreach ($contentRequests as $contentRequest) {
             if ($content = PageFactory::makeFromApiResponse($contentRequest->getResponse())) {

@@ -23,11 +23,20 @@ class ContentMap
         $this->items = $items;
     }
 
+    public function getType($name)
+    {
+        return isset($this->items[$name]) ? $this->items[$name] : null;
+    }
+
 
     public static function makeFromResponse(ApiResponse $apiResponse)
     {
         $data = $apiResponse->getData();
+        $formatted = [];
+        foreach ($data as $item) {
+            $formatted[$item['type']] = $item['items'];
+        }
 
-        dd($data);
+        return new static($formatted);
     }
 }
