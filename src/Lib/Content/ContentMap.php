@@ -23,12 +23,29 @@ class ContentMap
         $this->items = $items;
     }
 
+    /**
+     * @param $name
+     *
+     * @return mixed|null
+     */
     public function getType($name)
     {
         return isset($this->items[$name]) ? $this->items[$name] : null;
     }
 
+    /**
+     * @return array
+     */
+    public function all()
+    {
+        return $this->items;
+    }
 
+    /**
+     * @param ApiResponse $apiResponse
+     *
+     * @return ContentMap
+     */
     public static function makeFromResponse(ApiResponse $apiResponse)
     {
         $data = $apiResponse->getData();
