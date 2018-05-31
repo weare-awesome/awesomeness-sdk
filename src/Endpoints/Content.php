@@ -35,13 +35,16 @@ class Content implements EndpointInterface
      * @param null $distributionId
      * @param array $additionalContent
      *
+     * @param bool $includeMap
+     *
      * @return \WeAreAwesome\AwesomenessSDK\Lib\Content\Page|\WeAreAwesome\AwesomenessSDK\Lib\Content\PageCollection
      */
     public function getPageBySlug(
         $slug,
         $type = null,
         $distributionId = null,
-        array $additionalContent = []
+        array $additionalContent = [],
+        $includeMap = false
     ) {
         $params = [
             'slug' => $slug
@@ -66,9 +69,18 @@ class Content implements EndpointInterface
                 $contentRequests[] = $requests->get('content', $params);
             }
         }
+
+        $mapRequest = null;
+
+        if($includeMap) {
+            $mapRequest = $requests->get('content/map');
+        }
+
         $requests->call();
 
         $page = PageFactory::makeFromApiResponse($pageRequest->getResponse());
+
+        $page->setContentMap($mapRequest);
 
         foreach ($contentRequests as $contentRequest) {
             if ($content = PageFactory::makeFromApiResponse($contentRequest->getResponse())) {

@@ -18,6 +18,29 @@ class Page extends ContentItem
     protected $additionalContent;
 
     /**
+     * @var ContentMap
+     */
+    protected $contentMap;
+
+    /**
+     * @return ContentMap
+     */
+    public function getContentMap()
+    {
+        return $this->contentMap;
+    }
+
+    /**
+     * @param ContentMap $contentMap
+     */
+    public function setContentMap($contentMap)
+    {
+        $this->contentMap = $contentMap;
+    }
+
+
+
+    /**
      * @return string
      */
     public function getDescription()
