@@ -83,7 +83,7 @@ class Content implements EndpointInterface
 
         $page = PageFactory::makeFromApiResponse($pageRequest->getResponse());
 
-        if(!is_null($mapRequest)) {
+        if(!is_null($mapRequest) && !is_null($page)) {
             $page->setContentMap(ContentMap::makeFromResponse($mapRequest->getResponse()));
 
         }
