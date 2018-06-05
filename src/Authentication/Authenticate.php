@@ -43,6 +43,11 @@ class Authenticate
         );
     }
 
+    public function passwordResets()
+    {
+        return new PasswordResets($this->awesomeness);
+    }
+
     public function client()
     {
         $apiResponse = $this->awesomeness
