@@ -22,8 +22,25 @@ class PasswordResets
         $this->awesomeness = $awesomeness;
     }
 
+    /**
+     * @param $token
+     * @param $password
+     *
+     * @return \WeAreAwesome\AwesomenessSDK\Http\ApiResponse
+     */
     public function setPassword($token, $password)
     {
+        $resposne = $this->awesomeness
+            ->http()
+            ->sync()
+            ->post(
+                '/contacts/auth/set-password',
+                [
+                    'password' => $password,
+                    'token' => $token
+                ]
+            );
 
+        return $resposne;
     }
 }
