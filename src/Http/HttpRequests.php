@@ -48,9 +48,9 @@ class HttpRequests
     }
 
     /**
-     * @param Authentication $authentication
+     * @param Authentication | null $authentication
      */
-    public function setAuthentication(Authentication $authentication) {
+    public function setAuthentication(Authentication $authentication = null) {
         $this->sync->setAuthentication($authentication);
         $this->async->setAuthentication($authentication);
     }

@@ -41,10 +41,10 @@ interface AsyncInterface
     public function call();
 
     /**
-     * @param Authentication $authentication
+     * @param Authentication | null $authentication
      *
      */
-    public function setAuthentication(Authentication $authentication);
+    public function setAuthentication(Authentication $authentication = null);
 
     /**
      * @param array $headers
