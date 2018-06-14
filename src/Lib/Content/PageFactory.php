@@ -64,7 +64,7 @@ class PageFactory
                 if ($item['type'] == 'section') {
                     $section = new Section();
                     $section->setTitle($item['title']);
-                    $section->setDisplayed(is_null($item['publish_date']) ? false : (strtotime($item['publish_date']) < time()));
+                    $section->setDisplayed(is_null($item['publish_date']) ? true : (strtotime($item['publish_date']) < time()));
                     $section->setContent(new ContentCollection(
                         self::mapContent($item['children'])
                     ));
