@@ -11,6 +11,7 @@ use WeAreAwesome\AwesomenessSDK\Authentication\Authentication;
 use WeAreAwesome\AwesomenessSDK\Authentication\AuthenticationException;
 use WeAreAwesome\AwesomenessSDK\Http\ApiResponse;
 use WeAreAwesome\AwesomenessSDK\Http\AsyncInterface;
+use WeAreAwesome\AwesomenessSDK\Http\AwesomenessHTTPException;
 use WeAreAwesome\AwesomenessSDK\Http\ConnectionInterface;
 
 class GuzzleConnection implements ConnectionInterface
@@ -82,6 +83,8 @@ class GuzzleConnection implements ConnectionInterface
      * @param Authentication|null $authentication
      *
      * @return null|ApiResponse
+     * @throws AwesomenessHTTPException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function get(
         $uri,
@@ -153,7 +156,8 @@ class GuzzleConnection implements ConnectionInterface
      * @param Request $request
      *
      * @return null|ApiResponse
-     * @throws AuthenticationException
+     * @throws AwesomenessHTTPException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     private function call(Request $request)
     {
@@ -169,9 +173,8 @@ class GuzzleConnection implements ConnectionInterface
             return $this->hydrateApiResponse(new ApiResponse(), $response);
 
         } catch (ServerException $e) {
-            dd($e);
+            throw new AwesomenessHTTPException($e->getMessage(), $e->getResponse()->getStatusCode());
         } catch (ClientException $e) {
-            dd($e);
             if($e->getResponse()->getStatusCode() == 401) {
                 throw AuthenticationException::notAuthenticated();
             }
@@ -186,6 +189,8 @@ class GuzzleConnection implements ConnectionInterface
      * @param Authentication|null $authentication
      *
      * @return null|ApiResponse
+     * @throws AwesomenessHTTPException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function post(
         $uri,
@@ -208,6 +213,8 @@ class GuzzleConnection implements ConnectionInterface
      * @param $fileContents
      *
      * @return null|ApiResponse
+     * @throws AwesomenessHTTPException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function sendFile(
         $uri,
