@@ -42,8 +42,9 @@ class PageFactory
         $page->setBody($params['body']);
         $page->setSlug($params['slug']);
         $page->setType($params['type']);
-        $page->setMeta(MetaCollection::makeFromArray($params['meta']));
-        $page->setPublishDate(new \DateTime($params['publish_date']));
+        if(isset($params['meta'])) {
+            $page->setMeta(MetaCollection::makeFromArray($params['meta']));
+        }        $page->setPublishDate(new \DateTime($params['publish_date']));
         $page->setSections(
             new SectionCollection(
                 self::mapSections($params['children'])

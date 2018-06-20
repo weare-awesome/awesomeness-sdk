@@ -218,7 +218,9 @@ class ContentItem implements ContentTypeInterface
             $item->setId($params['id']);
             $item->setTitle($params['title']);
             $item->setBody($params['body']);
-            $item->setMeta(MetaCollection::makeFromArray($params['meta']));
+            if(isset($params['meta'])) {
+                $item->setMeta(MetaCollection::makeFromArray($params['meta']));
+            }
             $item->setType($params['type']);
             $item->setOrder($params['order']);
         }
