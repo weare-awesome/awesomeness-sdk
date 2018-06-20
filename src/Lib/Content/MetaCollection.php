@@ -7,6 +7,23 @@ use Illuminate\Support\Collection;
 
 class MetaCollection extends Collection
 {
+
+    /**
+     * @param mixed $key
+     * @param null $default
+     *
+     * @return mixed
+     */
+    public function get($key, $default = null)
+    {
+        foreach ($this->items as $item) {
+            if($item->getKey() == $key) {
+                return $item;
+            }
+        }
+        return value($default);
+    }
+
     /**
      * @param array|null $items
      *
