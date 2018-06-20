@@ -16,8 +16,10 @@ class ContentCollection extends Collection
      */
     public function renderAll(callable $function = null)
     {
-        return $this->map(function(ContentItem $item) use($function) {
-            if($function){
+        return $this->sortBy(function(ContentItem $item){
+            return $item->getOrder();
+        })->map(function(ContentItem $item) use($function) {
+            if($function) {
                 return $function($item);
             }
             return $item->render();
