@@ -5,6 +5,7 @@ namespace WeAreAwesome\AwesomenessSDK\Endpoints;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use WeAreAwesome\AwesomenessSDK\Awesomeness;
+use WeAreAwesome\AwesomenessSDK\Exceptions\ContentNotFoundException;
 use WeAreAwesome\AwesomenessSDK\Http\RequestInformation;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\ContentCollection;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\ContentMap;
@@ -39,6 +40,7 @@ class Content implements EndpointInterface
      * @param bool $includeMap
      *
      * @return \WeAreAwesome\AwesomenessSDK\Lib\Content\Page|\WeAreAwesome\AwesomenessSDK\Lib\Content\PageCollection
+     * @throws ContentNotFoundException
      */
     public function getPageBySlug(
         $slug,
@@ -81,6 +83,11 @@ class Content implements EndpointInterface
 
         $requests->call();
 
+
+        if($pageRequest->getResponse()->getCode() !== 200) {
+            throw new ContentNotFoundException('The content you requested can\'t bew found');
+        }
+
         $page = PageFactory::makeFromApiResponse($pageRequest->getResponse());
 
         if(!is_null($mapRequest) && !is_null($page)) {
@@ -99,21 +106,7 @@ class Content implements EndpointInterface
 
         return $page;
     }
-
-    /**
-     * @param $slug
-     * @param null $type
-     * @param null $distributionId
-     * @param array $additionalContent
-     */
-    public function getBySlug(
-        $slug,
-        $type = null,
-        $distributionId = null,
-        array $additionalContent = []
-    ) {
-
-    }
+    
 
     /**
      * @param array $params
