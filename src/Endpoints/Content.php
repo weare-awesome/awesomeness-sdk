@@ -106,7 +106,7 @@ class Content implements EndpointInterface
 
         return $page;
     }
-    
+
 
     /**
      * @param array $params

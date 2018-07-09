@@ -14,14 +14,29 @@ class MetaCollection extends Collection
      *
      * @return mixed
      */
-    public function get($key, $default = null)
+    public function get($key, $default = '')
     {
         foreach ($this->items as $item) {
             if($item->getKey() == $key) {
                 return $item;
             }
         }
-        return value($default);
+        return $default;
+    }
+
+
+    /**
+     * @param $key
+     * @param null $default
+     * @return null
+     */
+    public function getValue($key, $default = null)
+    {
+        $meta = $this->get($key);
+        if(!is_null($meta)) {
+            return $meta->getValue();
+        }
+        return $default;
     }
 
     /**
