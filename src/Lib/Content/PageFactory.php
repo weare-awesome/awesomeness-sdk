@@ -29,6 +29,16 @@ class PageFactory
         );
     }
 
+
+    /**
+     * @param array $content
+     * @return Page
+     */
+    public static function makeFromArray(array $content)
+    {
+        return self::makeContent($content);
+    }
+
     /**
      * @param $params
      *
