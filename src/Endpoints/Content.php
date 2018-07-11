@@ -128,7 +128,7 @@ class Content implements EndpointInterface
         $pagination = $response->getPagination();
         $content = new LengthAwarePaginator(
             $content,
-            100,
+            $pagination['total'],
             $pagination['per_page'],
             $pagination['current_page']
         );
