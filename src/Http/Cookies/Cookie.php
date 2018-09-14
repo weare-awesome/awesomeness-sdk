@@ -60,6 +60,11 @@ class Cookie
 
     public function __toString()
     {
+        return $this->toString();
+    }
+
+    public function toString()
+    {
         return base64_encode(json_encode($this->toArray()));
     }
 
@@ -89,9 +94,9 @@ class Cookie
         $cookie = new self();
 
         if ($authentication = $awesomeness->authentication()) {
+
             $cookie->setAccessToken($authentication->getAccessToken());
         }
-
         return $cookie;
     }
 
