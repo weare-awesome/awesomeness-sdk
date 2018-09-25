@@ -91,6 +91,11 @@ class Awesomeness
         );
     }
 
+    public function getAccountId()
+    {
+        return $this->accountId;
+    }
+
     /**
      * @return HttpRequests
      */

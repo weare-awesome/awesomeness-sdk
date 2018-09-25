@@ -56,6 +56,7 @@ class Authenticate
             ->post(
                 self::OAUTH_URL,
                 [
+                    'requested_account_id' => $this->awesomeness->getAccountId(),
                     'grant_type' => self::CLIENT_GRANT,
                     'client_id' => $this->awesomeness->getClientId(),
                     'client_secret' => $this->awesomeness->getClientSecret(),
@@ -117,12 +118,14 @@ class Authenticate
     private function throwException($code)
     {
         switch ($code) {
-            case 401 : {
-                throw AuthenticationException::invalidCredentials();
-            }
-            default: {
-                throw new \Exception();
-            }
+            case 401 :
+                {
+                    throw AuthenticationException::invalidCredentials();
+                }
+            default:
+                {
+                    throw new \Exception();
+                }
         }
     }
 
