@@ -23,7 +23,7 @@ class PageFactory
             return self::makeContent($items[0]);
         }
         return new PageCollection(
-            array_map(function($item){
+            array_map(function ($item) {
                 return self::makeContent($item);
             }, $items)
         );
@@ -34,17 +34,18 @@ class PageFactory
      * @param array $content
      * @return Page
      */
-    public static function makeFromArray(array $content)
+    public static function makeFromArray(array $content, array $config = null)
     {
-        return self::makeContent($content);
+        return self::makeContent($content, $config);
     }
 
     /**
      * @param $params
      *
+     * @param array|null $config
      * @return Page
      */
-    private static function makeContent($params)
+    private static function makeContent($params, array $config = null)
     {
         $page = new Page();
         $page->setId($params['id']);
@@ -52,12 +53,13 @@ class PageFactory
         $page->setBody($params['body']);
         $page->setSlug($params['slug']);
         $page->setType($params['type']);
-        if(isset($params['meta'])) {
+        if (isset($params['meta'])) {
             $page->setMeta(MetaCollection::makeFromArray($params['meta']));
-        }        $page->setPublishDate(new \DateTime($params['publish_date']));
+        }
+        $page->setPublishDate(new \DateTime($params['publish_date']));
         $page->setSections(
             new SectionCollection(
-                self::mapSections($params['children'])
+                self::mapSections($params['children'], $config)
             )
         );
 
@@ -69,12 +71,17 @@ class PageFactory
      *
      * @return array
      */
-    private static function mapSections($content)
+    private static function mapSections($content, array $config = null)
     {
         return array_map(
-            function ($item) {
+            function ($item) use ($config) {
                 if ($item['type'] == 'section') {
-                    $section = new Section();
+
+                    if (self::isSectionIndex($item, $config)) {
+                        $section = new Section();
+                    } else {
+                        $section = new Section();
+                    }
                     $section->setTitle($item['title']);
                     $section->setDisplayed(is_null($item['publish_date']) ? true : (strtotime($item['publish_date']) < time()));
                     $section->setContent(new ContentCollection(
@@ -85,6 +92,33 @@ class PageFactory
                 }
             },
             $content);
+    }
+
+    /**
+     * @param array $section
+     * @param array|null $config
+     * @return bool
+     */
+    private static function isSectionIndex(array $section, array $config = null)
+    {
+        if (is_null($config)) {
+            return false;
+        }
+
+        $sectionConfig = null;
+
+        foreach ($config['sections'] as $item) {
+
+            if($item['name'] === $section['title']) {
+                $sectionConfig = $item;
+            }
+        }
+
+        if(isset($sectionConfig['index'])) {
+            return $sectionConfig['index'];
+        }
+
+        return false;
     }
 
     /**
