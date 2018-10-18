@@ -22,6 +22,28 @@ class Page extends ContentItem
      */
     protected $contentMap;
 
+
+    /**
+     * @var
+     */
+    protected $path;
+
+
+    /**
+     * @param null|string $path
+     */
+    public function setPath(?string $path) {
+        $this->path = $path;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath()
+    {
+        return !is_null($this->path) ? $this->path : '';
+    }
+
     /**
      * @return ContentMap
      */

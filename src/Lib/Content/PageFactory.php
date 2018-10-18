@@ -56,6 +56,10 @@ class PageFactory
         if (isset($params['meta'])) {
             $page->setMeta(MetaCollection::makeFromArray($params['meta']));
         }
+        if(isset($params['path'])) {
+            $page->setPath($params['path']);
+        }
+
         $page->setPublishDate(new \DateTime($params['publish_date']));
         $page->setSections(
             new SectionCollection(
