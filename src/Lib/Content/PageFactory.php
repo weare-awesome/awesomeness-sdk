@@ -78,7 +78,7 @@ class PageFactory
                 if ($item['type'] == 'section') {
 
                     if (self::isSectionIndex($item, $config)) {
-                        $section = new Section();
+                        $section = new IndexSection();
                     } else {
                         $section = new Section();
                     }

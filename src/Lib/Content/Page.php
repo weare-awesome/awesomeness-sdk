@@ -38,7 +38,15 @@ class Page extends ContentItem
         $this->contentMap = $contentMap;
     }
 
-
+    /**
+     * @return SectionCollection
+     */
+    public function getIndexSections()
+    {
+        return $this->sections->filter(function(Section $section) {
+            return $section instanceof IndexSection;
+        });
+    }
 
     /**
      * @return string
