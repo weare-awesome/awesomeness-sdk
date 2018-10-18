@@ -32,7 +32,7 @@ class MetaCollection extends Collection
      */
     public function getValue($key, $default = null)
     {
-        $meta = $this->get($key);
+        $meta = $this->get($key, null);
         if(!is_null($meta)) {
             return $meta->getValue();
         }
