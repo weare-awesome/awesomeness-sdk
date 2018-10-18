@@ -15,6 +15,15 @@ class IndexSection extends Section
 
 
     /**
+     * @return array
+     */
+    public function allPages()
+    {
+        return $this->pages ? $this->pages->all() : [];
+    }
+
+
+    /**
      * @param null|PageCollection $collection
      */
     public function setPages(?PageCollection $collection)
