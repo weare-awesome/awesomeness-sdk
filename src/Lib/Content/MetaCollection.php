@@ -46,13 +46,14 @@ class MetaCollection extends Collection
      */
     public static function makeFromArray(array $items = null)
     {
+
         $collection = self::make();
         if(!is_array($items)) {
             return $collection;
         }
 
         foreach ($items as $key => $value) {
-            $collection = self::make([Meta::make($key, $value)]);
+            $collection = $collection->merge(self::make([Meta::make($key, $value)]));
         }
 
         return $collection;
