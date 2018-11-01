@@ -38,7 +38,11 @@ class DistributionPage extends Page
      */
     public static function makeFromApiResponse(ApiResponse $response)
     {
-        $page = PageFactory::makeFromArray($response->getData()['content']);
+        $content = $response->getData()['content'];
+        $page = PageFactory::makeFromArray(
+            $content,
+            json_decode($content['content_type']['cms_config'], true)
+        );
         $distributionPage = self::castPageToDistributionPage($page);
         $distributionPage->setMenus(
             self::makeMenuCollection($response->getData()['menus'])
