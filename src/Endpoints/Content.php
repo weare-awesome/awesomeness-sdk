@@ -9,6 +9,7 @@ use WeAreAwesome\AwesomenessSDK\Exceptions\ContentNotFoundException;
 use WeAreAwesome\AwesomenessSDK\Http\RequestInformation;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\ContentCollection;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\ContentMap;
+use WeAreAwesome\AwesomenessSDK\Lib\Content\DistributionPage;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\Page;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\PageCollection;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\PageFactory;
@@ -117,10 +118,11 @@ class Content implements EndpointInterface
                 'path' => $path
             ]);
 
-        if($response->getResponse()->getCode() !== 200) {
+        if($response->getCode() !== 200) {
             throw new ContentNotFoundException('The content you requested can\'t bew found');
         }
 
+        return DistributionPage::makeFromApiResponse($response);
 
     }
 
