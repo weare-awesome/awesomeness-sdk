@@ -3,6 +3,8 @@
 namespace WeAreAwesome\AwesomenessSDK\Lib\Content;
 
 
+use Illuminate\Support\Collection;
+
 class Menu
 {
 
@@ -16,6 +18,11 @@ class Menu
      * @var string
      */
     protected $name;
+
+    /**
+     * @var Collection
+     */
+    protected $menuItems;
 
     /**
      * @return int
@@ -49,6 +56,23 @@ class Menu
         $this->name = $name;
     }
 
+    /**
+     * @return Collection
+     */
+    public function getMenuItems(): Collection
+    {
+        return $this->menuItems;
+    }
+
+    /**
+     * @param Collection $menuItems
+     */
+    public function setMenuItems(Collection $menuItems)
+    {
+        $this->menuItems = $menuItems;
+    }
+
+
 
     /**
      * @param array $params
@@ -62,6 +86,11 @@ class Menu
         }
         if(isset($params['name'])) {
             $menu->setName($params['name']);
+        }
+
+
+        if(isset($params['menu_items'])) {
+            $menu->setMenuItems(MenuItem::makeItems($params['menu_items']));
         }
 
         return $menu;
