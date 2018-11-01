@@ -10,9 +10,11 @@ use WeAreAwesome\AwesomenessSDK\Http\RequestInformation;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\ContentCollection;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\ContentMap;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\DistributionPage;
+use WeAreAwesome\AwesomenessSDK\Lib\Content\IndexSection;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\Page;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\PageCollection;
 use WeAreAwesome\AwesomenessSDK\Lib\Content\PageFactory;
+use Carbon\Carbon;
 
 class Content implements EndpointInterface
 {
@@ -78,20 +80,20 @@ class Content implements EndpointInterface
 
         $mapRequest = null;
 
-        if($includeMap) {
+        if ($includeMap) {
             $mapRequest = $requests->get('content/map');
         }
 
         $requests->call();
 
 
-        if($pageRequest->getResponse()->getCode() !== 200) {
+        if ($pageRequest->getResponse()->getCode() !== 200) {
             throw new ContentNotFoundException('The content you requested can\'t bew found');
         }
 
         $page = PageFactory::makeFromApiResponse($pageRequest->getResponse());
 
-        if(!is_null($mapRequest) && !is_null($page)) {
+        if (!is_null($mapRequest) && !is_null($page)) {
             $page->setContentMap(ContentMap::makeFromResponse($mapRequest->getResponse()));
 
         }
@@ -108,7 +110,18 @@ class Content implements EndpointInterface
         return $page;
     }
 
-    public function getDistributionPage($distributionId, $path) {
+    /**
+     * @param $distributionId
+     * @param $path
+     * @param int $page
+     * @return int|DistributionPage
+     * @throws ContentNotFoundException
+     */
+    public function getDistributionPage(
+        $distributionId,
+        $path,
+        $page = 1
+    ) {
 
         $response = $this->awesomeness
             ->http()
@@ -118,12 +131,34 @@ class Content implements EndpointInterface
                 'path' => $path
             ]);
 
-        if($response->getCode() !== 200) {
+        if ($response->getCode() !== 200) {
             throw new ContentNotFoundException('The content you requested can\'t bew found');
         }
 
-        return DistributionPage::makeFromApiResponse($response);
+        $page = DistributionPage::makeFromApiResponse($response);
+        $page->getIndexSections()->each(function (IndexSection $section) use($distributionId) {
+            $type = $section->getContentType();
+            if (is_null($type)) {
+                return;
+            }
+            $params = [
+                'types' => [$type],
+                'page' => $section->isPaginated() ? $page : 1,
+                'limit' => $section->getPerPage(),
+                'publish_date' => Carbon::now()->format('Y-m-d H:i:s'),
+                'distribution_id' => $distributionId
+            ];
 
+            $response = $this->awesomeness
+                ->http()
+                ->sync()
+                ->get('/content', $params);
+
+            $section->setPages(PageCollection::make(array_map(function ($item) {
+                return PageFactory::makeFromArray($item);
+            }, $response->getData())));
+        });
+        return $page;
     }
 
 
