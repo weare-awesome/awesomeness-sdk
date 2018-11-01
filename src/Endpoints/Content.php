@@ -107,6 +107,23 @@ class Content implements EndpointInterface
         return $page;
     }
 
+    public function getDistributionPage($distributionId, $path) {
+
+        $response = $this->awesomeness
+            ->http()
+            ->sync()
+            ->get('/content/page', [
+                'distribution_id' => $distributionId,
+                'path' => $path
+            ]);
+
+        if($response->getResponse()->getCode() !== 200) {
+            throw new ContentNotFoundException('The content you requested can\'t bew found');
+        }
+
+
+    }
+
 
     /**
      * @param array $params
