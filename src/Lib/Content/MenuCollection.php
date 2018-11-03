@@ -17,10 +17,10 @@ class MenuCollection extends Collection
         $menu = null;
 
         foreach ($this->all() as $item) {
-            if ($item->getId() === $id) {
+            if ($item->getId() == $id) {
                 $menu = $item;
+                break;
             }
-            break;
         }
 
         return $menu;
