@@ -4,6 +4,7 @@
 namespace WeAreAwesome\AwesomenessSDK\Lib\Content;
 
 
+use App\SiteConfig;
 use WeAreAwesome\AwesomenessSDK\Http\ApiResponse;
 
 class DistributionPage extends Page
@@ -13,6 +14,29 @@ class DistributionPage extends Page
      * @var MenuCollection
      */
     protected $menus;
+
+
+    /**
+     * @var SiteConfig
+     */
+    protected $config;
+
+
+    /**
+     * @return SiteConfig
+     */
+    public function config()
+    {
+        return $this->config;
+    }
+
+    /**
+     * @param SiteConfig $config
+     */
+    public function setConfig(SiteConfig $config)
+    {
+        $this->config = $config;
+    }
 
 
     /**
@@ -46,6 +70,9 @@ class DistributionPage extends Page
         $distributionPage = self::castPageToDistributionPage($page);
         $distributionPage->setMenus(
             self::makeMenuCollection($response->getData()['menus'])
+        );
+        $distributionPage->setConfig(
+            new SiteConfig($response->getData()['siteConfig'])
         );
         return $distributionPage;
     }
