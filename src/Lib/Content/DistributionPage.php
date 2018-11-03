@@ -4,7 +4,7 @@
 namespace WeAreAwesome\AwesomenessSDK\Lib\Content;
 
 
-use App\SiteConfig;
+use WeAreAwesome\AwesomenessSDK\Lib\Content\SiteConfig;
 use WeAreAwesome\AwesomenessSDK\Http\ApiResponse;
 
 class DistributionPage extends Page

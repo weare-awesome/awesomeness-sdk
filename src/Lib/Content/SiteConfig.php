@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App;
+namespace WeAreAwesome\AwesomenessSDK\Lib\Content;
 
 
 class SiteConfig
