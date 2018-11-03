@@ -14,7 +14,16 @@ class MenuCollection extends Collection
      */
     public function getById($id)
     {
-        return (array) $this->firstWhere('id', $id);
+        $menu = null;
+
+        foreach ($this->all() as $item) {
+            if ($item->getId() === $id) {
+                $menu = $item;
+            }
+            break;
+        }
+
+        return $menu;
     }
 
     /**
@@ -23,6 +32,6 @@ class MenuCollection extends Collection
      */
     public function getByName($name)
     {
-        return (array) $this->firstWhere('name', $name);
+        return (array)$this->firstWhere('name', $name);
     }
 }
