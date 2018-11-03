@@ -136,7 +136,7 @@ class Content implements EndpointInterface
         }
 
         $page = DistributionPage::makeFromApiResponse($response);
-        $page->getIndexSections()->each(function (IndexSection $section) use($distributionId) {
+        $page->getIndexSections()->each(function (IndexSection $section) use ($distributionId) {
             $type = $section->getContentType();
             if (is_null($type)) {
                 return;
@@ -154,9 +154,20 @@ class Content implements EndpointInterface
                 ->sync()
                 ->get('/content', $params);
 
-            $section->setPages(PageCollection::make(array_map(function ($item) {
-                return PageFactory::makeFromArray($item);
-            }, $response->getData())));
+            $section->setPages(
+                new LengthAwarePaginator(
+                    PageCollection::make(
+                        array_map(function ($item) {
+                            return PageFactory::makeFromArray($item);
+                        }, $response->getData())
+                    ),
+                    200,
+                    $response->getPagination()['per_page'],
+                    $response->getPagination()['current_page']
+
+                )
+            );
+
         });
         return $page;
     }

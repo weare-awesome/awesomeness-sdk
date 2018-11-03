@@ -4,12 +4,13 @@
 namespace WeAreAwesome\AwesomenessSDK\Lib\Content;
 
 
+use Illuminate\Pagination\LengthAwarePaginator;
+
 class IndexSection extends Section
 {
 
-
     /**
-     * @var PageCollection
+     * @var LengthAwarePaginator
      */
     protected $pages;
 
@@ -22,11 +23,20 @@ class IndexSection extends Section
         return $this->pages ? $this->pages->all() : [];
     }
 
+    /**
+     * @return \Illuminate\Support\HtmlString
+     */
+    public function renderPagination($path = '')
+    {
+        $content = clone $this->pages;
+        $content->withPath($path);
+        return $content->links();
+    }
 
     /**
-     * @param null|PageCollection $collection
+     * @param null|LengthAwarePaginator $collection
      */
-    public function setPages(?PageCollection $collection)
+    public function setPages(?LengthAwarePaginator $collection)
     {
         $this->pages = $collection;
     }
