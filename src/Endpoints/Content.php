@@ -161,7 +161,7 @@ class Content implements EndpointInterface
                             return PageFactory::makeFromArray($item);
                         }, $response->getData())
                     ),
-                    200,
+                    $response->getPagination()['total'],
                     $response->getPagination()['per_page'],
                     $response->getPagination()['current_page']
 
