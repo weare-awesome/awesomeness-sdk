@@ -114,13 +114,16 @@ class Content implements EndpointInterface
      * @param $distributionId
      * @param $path
      * @param int $page
+     * @param array $indexParamsOverrides
      * @return int|DistributionPage
      * @throws ContentNotFoundException
      */
     public function getDistributionPage(
         $distributionId,
         $path,
-        $page = 1
+        $page = 1,
+        $indexParamsOverrides  = []
+
     ) {
 
         $response = $this->awesomeness
@@ -136,7 +139,7 @@ class Content implements EndpointInterface
         }
 
         $page = DistributionPage::makeFromApiResponse($response);
-        $page->getIndexSections()->each(function (IndexSection $section) use ($distributionId) {
+        $page->getIndexSections()->each(function (IndexSection $section) use ($distributionId, $indexParamsOverrides, $page) {
             $type = $section->getContentType();
             if (is_null($type)) {
                 return;
@@ -148,6 +151,12 @@ class Content implements EndpointInterface
                 'publish_date' => Carbon::now()->format('Y-m-d H:i:s'),
                 'distribution_id' => $distributionId
             ];
+
+            $params = self::overrideIndexParams(
+                $params,
+                $indexParamsOverrides,
+                $type
+            );
 
             $response = $this->awesomeness
                 ->http()
@@ -172,6 +181,26 @@ class Content implements EndpointInterface
         return $page;
     }
 
+
+    /**
+     * @param array $params
+     * @param array $options
+     * @param string $contentType
+     * @return array
+     */
+    private static function overrideIndexParams(
+        array $params = [],
+        array $options = [],
+        $contentType = ''
+    ) {
+        if(isset($options[$contentType]) && is_array($options[$contentType])) {
+            foreach ($options[$contentType] as $key => $value) {
+                $params[$key] = $value;
+            }
+
+        }
+        return $params;
+    }
 
     /**
      * @param array $params
