@@ -98,6 +98,8 @@ class Section
                 return false;
             }
             return true;
+        })->sortBy(function(ContentItem $item) {
+            return $item->getOrder();
         })->toArray();
     }
 
@@ -112,6 +114,8 @@ class Section
                 return true;
             }
             return false;
+        })->sortBy(function(ContentItem $item) {
+            return $item->getOrder();
         })->toArray();
     }
 }
