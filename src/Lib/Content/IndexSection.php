@@ -24,6 +24,14 @@ class IndexSection extends Section
     }
 
     /**
+     * @return LengthAwarePaginator
+     */
+    public function getPages()
+    {
+        return $this->pages;
+    }
+
+    /**
      * @return \Illuminate\Support\HtmlString
      */
     public function renderPagination($path = '')
@@ -79,4 +87,4 @@ class IndexSection extends Section
         }
         return false;
     }
-}
+}pub
