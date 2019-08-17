@@ -87,4 +87,4 @@ class IndexSection extends Section
         }
         return false;
     }
-}pub
+}
